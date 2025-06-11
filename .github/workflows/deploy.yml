@@ -40,8 +40,24 @@ jobs:
       
     - name: Create deployment package
       run: |
-        # Create a tar archive of the project
-        tar -czf luminakraft-api.tar.gz --exclude='.git' --exclude='node_modules' --exclude='.github' .
+        # Create a clean directory for deployment
+        mkdir -p deploy-package
+        
+        # Copy specific files and directories we need
+        cp package.json package-lock.json deploy-package/
+        cp Dockerfile docker-compose.yml deploy-package/
+        cp -r src/ deploy-package/
+        cp -r scripts/ deploy-package/ || true
+        cp README.md deploy-package/ || true
+        cp .dockerignore deploy-package/ || true
+        
+        # Create tar from the clean directory
+        cd deploy-package
+        tar -czf ../luminakraft-api.tar.gz .
+        cd ..
+        
+        # Verify the archive was created
+        ls -la luminakraft-api.tar.gz
         
     - name: Transfer files and deploy
       uses: appleboy/ssh-action@v1.0.0
@@ -82,6 +98,9 @@ jobs:
           tar -xzf luminakraft-api.tar.gz -C $APP_DIR
           cd $APP_DIR
           
+          # Verify files were extracted
+          ls -la
+          
           # Stop existing container
           docker stop luminakraft-api || true
           docker rm luminakraft-api || true
@@ -95,6 +114,9 @@ jobs:
             --restart unless-stopped \
             -p 9374:9374 \
             luminakraft-launcher-api:latest
+          
+          # Show container status
+          docker ps | grep luminakraft-api || echo "Container not running"
           
           # Clean up
           rm -f $HOME/luminakraft-api.tar.gz
