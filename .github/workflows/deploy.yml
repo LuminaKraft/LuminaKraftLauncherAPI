@@ -47,6 +47,7 @@ jobs:
         cp package.json package-lock.json deploy-package/
         cp Dockerfile docker-compose.yml deploy-package/
         cp -r src/ deploy-package/
+        cp -r data/ deploy-package/
         cp -r scripts/ deploy-package/ || true
         cp README.md deploy-package/ || true
         cp .dockerignore deploy-package/ || true
