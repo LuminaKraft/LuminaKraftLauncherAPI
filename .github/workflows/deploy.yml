@@ -46,16 +46,16 @@ jobs:
         username: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.DEPLOY_SSH_KEY }}
         script: |
-          # Navigate to app directory (create if doesn't exist)
-          mkdir -p /opt/luminakraft-launcher-api
-          cd /opt/luminakraft-launcher-api
+          # Navigate to app directory in home folder
+          cd $HOME
+          APP_DIR="luminakraft-launcher-api"
           
-          # Clone or update repository
-          if [ -d ".git" ]; then
-            git pull origin main
-          else
-            git clone https://github.com/${{ github.repository }} .
-          fi
+          # Remove existing directory if it exists and recreate it
+          rm -rf $APP_DIR
+          
+          # Clone repository
+          git clone https://github.com/${{ github.repository }} $APP_DIR
+          cd $APP_DIR
           
           # Stop existing container
           docker stop luminakraft-api || true
