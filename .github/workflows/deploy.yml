@@ -38,7 +38,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Deploy to server via SSH
+    - name: Create deployment package
+      run: |
+        # Create a tar archive of the project
+        tar -czf luminakraft-api.tar.gz --exclude='.git' --exclude='node_modules' --exclude='.github' .
+        
+    - name: Transfer files and deploy
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.DEPLOY_HOST }}
@@ -46,15 +51,35 @@ jobs:
         username: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.DEPLOY_SSH_KEY }}
         script: |
-          # Navigate to app directory in home folder
-          cd $HOME
-          APP_DIR="luminakraft-launcher-api"
-          
-          # Remove existing directory if it exists and recreate it
+          # Create app directory
+          APP_DIR="$HOME/luminakraft-launcher-api"
           rm -rf $APP_DIR
+          mkdir -p $APP_DIR
           
-          # Clone repository
-          git clone https://github.com/${{ github.repository }} $APP_DIR
+    - name: Copy files to server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        port: ${{ secrets.DEPLOY_PORT }}
+        username: ${{ secrets.DEPLOY_USER }}
+        key: ${{ secrets.DEPLOY_SSH_KEY }}
+        source: "luminakraft-api.tar.gz"
+        target: "$HOME/"
+        
+    - name: Extract and deploy
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        port: ${{ secrets.DEPLOY_PORT }}
+        username: ${{ secrets.DEPLOY_USER }}
+        key: ${{ secrets.DEPLOY_SSH_KEY }}
+        script: |
+          # Navigate to app directory
+          APP_DIR="$HOME/luminakraft-launcher-api"
+          cd $HOME
+          
+          # Extract files
+          tar -xzf luminakraft-api.tar.gz -C $APP_DIR
           cd $APP_DIR
           
           # Stop existing container
@@ -71,11 +96,13 @@ jobs:
             -p 9374:9374 \
             luminakraft-launcher-api:latest
           
-          # Clean up old images
+          # Clean up
+          rm -f $HOME/luminakraft-api.tar.gz
           docker image prune -f
           
     - name: Verify deployment
       run: |
         sleep 15
-        # Test through your domain once cloudflare tunnel is set up
-        curl -f https://api.luminakraft.com/health || echo "API not accessible via domain yet, check Cloudflare tunnel setup" 
+        # Test the API
+        curl -f https://api.luminakraft.com/health || echo "API not accessible yet, checking..."
+        curl -f https://api.luminakraft.com/v1/info || echo "Info endpoint not accessible yet" 
