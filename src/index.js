@@ -156,6 +156,52 @@ app.get('/v1/translations', (req, res) => {
   }
 });
 
+// Get features for a specific modpack in a specific language
+app.get('/v1/modpacks/:id/features/:lang', (req, res) => {
+  try {
+    const { id, lang } = req.params;
+    const supportedLangs = ['es', 'en'];
+    
+    if (!supportedLangs.includes(lang)) {
+      return res.status(404).json({
+        error: 'Language not supported',
+        message: `Language '${lang}' is not supported. Available languages: ${supportedLangs.join(', ')}`
+      });
+    }
+    
+    const translationPath = path.join(__dirname, `../data/translations/${lang}.json`);
+    
+    if (!fs.existsSync(translationPath)) {
+      return res.status(404).json({
+        error: 'Translation file not found',
+        message: `Translation file for language '${lang}' does not exist`
+      });
+    }
+    
+    const translations = JSON.parse(fs.readFileSync(translationPath, 'utf8'));
+    
+    if (!translations.features || !translations.features[id]) {
+      return res.status(404).json({
+        error: 'Features not found',
+        message: `Features for modpack '${id}' in language '${lang}' do not exist`
+      });
+    }
+    
+    res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
+    res.json({
+      modpackId: id,
+      language: lang,
+      features: translations.features[id]
+    });
+  } catch (error) {
+    console.error('Error reading features data:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: 'Failed to read features data'
+    });
+  }
+});
+
 // API info endpoint
 app.get('/v1/info', (req, res) => {
   const packageJson = require('../package.json');
@@ -168,6 +214,7 @@ app.get('/v1/info', (req, res) => {
       'GET /v1/launcher_data.json - Complete launcher data',
       'GET /v1/modpacks - List all modpacks',
       'GET /v1/modpacks/:id - Get specific modpack',
+      'GET /v1/modpacks/:id/features/:lang - Get modpack features in specific language',
       'GET /v1/translations - Available languages',
       'GET /v1/translations/:lang - Get translations for language',
       'GET /v1/info - API information'
@@ -185,6 +232,7 @@ app.use('*', (req, res) => {
       '/v1/launcher_data.json',
       '/v1/modpacks',
       '/v1/modpacks/:id',
+      '/v1/modpacks/:id/features/:lang',
       '/v1/translations',
       '/v1/translations/:lang',
       '/v1/info'

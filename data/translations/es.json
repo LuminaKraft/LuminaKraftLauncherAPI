@@ -2,34 +2,144 @@
   "modpacks": {
     "ancientkraft_rechapter": {
       "name": "AncientKraft Rechapter",
-      "description": "Sumérgete en un mundo de magia ancestral y aventuras épicas. Explora ruinas antiguas, domina artes arcanas y forja tu leyenda en este modpack RPG lleno de misterios por descubrir.",
-      "shortDescription": "Magia ancestral y aventuras épicas"
+      "description": "La experiencia de aventura RPG definitiva - completamente reconstruida con magia revolucionaria, combate de nueva generación y mundos expandidos. ¡Ahora sin LAG!",
+      "shortDescription": "Aventura RPG definitiva reconstruida"
     },
     "onepieceworlds2": {
       "name": "One Piece World S2",
-      "description": "Navega por los mares más peligrosos en busca del One Piece. Conviértete en pirata, marine o revolucionario en esta segunda temporada llena de nuevas aventuras, frutas del diablo y batallas épicas.",
-      "shortDescription": "Aventuras piratas en alta mar"
+      "description": "Domina el Haki avanzado, descubre Frutas del Diablo raras y conquista el Nuevo Mundo en esta experiencia mejorada de One Piece.",
+      "shortDescription": "Experiencia mejorada de One Piece"
     },
     "luminakraft_world": {
       "name": "LuminaKraft World",
-      "description": "Nuestro servidor de supervivencia principal donde la comunidad se reúne para construir, explorar y crear juntos. Un mundo vanilla mejorado con plugins que enriquecen la experiencia sin alterar la esencia de Minecraft.",
-      "shortDescription": "Supervivencia comunitaria mejorada"
+      "description": "Mundo personalizado, mazmorras únicas, mobs escalables, habilidades, economía, reclamación de tierras, control PvP, mapa en vivo.",
+      "shortDescription": "Supervivencia mejorada con características personalizadas"
     },
     "onepieceworld": {
       "name": "One Piece World",
-      "description": "La primera temporada del universo One Piece en Minecraft. Explora islas únicas, obtén poderes de frutas del diablo y vive aventuras épicas en el mundo de los piratas más famoso del anime.",
-      "shortDescription": "El mundo de One Piece original"
+      "description": "Vive la gran aventura de One Piece: encuentra Frutas del Diablo y domina los mares.",
+      "shortDescription": "La gran aventura de One Piece"
     },
     "ancientkraft": {
       "name": "AncientKraft",
-      "description": "Un modpack de aventura y RPG que combina magia antigua con tecnología perdida. Explora dimensiones misteriosas, construye imperios y descubre secretos que han permanecido ocultos durante milenios.",
-      "shortDescription": "Magia antigua y tecnología perdida"
+      "description": "Modpack de aventura estilo RPG con sistema de magia personalizado, combate personalizado y más",
+      "shortDescription": "Aventura RPG con sistemas personalizados"
     },
     "pt-the_full_course": {
       "name": "PT: The Full Course",
-      "description": "Un servidor de supervivencia vanilla puro donde la experiencia clásica de Minecraft se vive en su máxima expresión. Perfecto para jugadores que buscan la experiencia auténtica sin modificaciones.",
-      "shortDescription": "Supervivencia vanilla auténtica"
+      "description": "Servidor de supervivencia insignia con plugins personalizados y eventos",
+      "shortDescription": "Supervivencia insignia con eventos"
     }
+  },
+  "features": {
+    "ancientkraft_rechapter": [
+      {
+        "title": "Sistema de Magia Revolucionario",
+        "description": "Experimenta un sistema de magia completamente rediseñado con creación avanzada de hechizos, dominio elemental y caminos de progresión mágica"
+      },
+      {
+        "title": "Mecánicas de Combate de Nueva Generación",
+        "description": "Participa en batallas dinámicas con sistemas de combate renovados, habilidades de armas y capacidades tácticas que redefinen el PvP y PvE"
+      },
+      {
+        "title": "Reinos Antiguos Expandidos",
+        "description": "Explora vastos mundos reimaginados con nuevos biomas, mazmorras mejoradas, artefactos legendarios y secretos esperando ser descubiertos"
+      },
+      {
+        "title": "Sistemas de Gremios Mejorados",
+        "description": "Únete a gremios mejorados con progresión avanzada, control territorial, guerras de gremios y contenido colaborativo basado en reinos antiguos"
+      }
+    ],
+    "onepieceworlds2": [
+      {
+        "title": "Frutas del Diablo Avanzadas",
+        "description": "Descubre Frutas del Diablo raras y poderosas con combinaciones únicas y mecánicas de evolución."
+      },
+      {
+        "title": "Sistema de Haki Avanzado",
+        "description": "Domina los tres tipos de Haki con un sistema de progresión profundo y técnicas especiales."
+      },
+      {
+        "title": "Exploración del Nuevo Mundo",
+        "description": "Aventúrate en el peligroso Nuevo Mundo, donde enemigos más fuertes y tesoros más grandes te esperan."
+      },
+      {
+        "title": "Multijugador Mejorado",
+        "description": "Crea tu propia tripulación pirata, establece territorios y participa en batallas navales épicas."
+      }
+    ],
+    "luminakraft_world": [
+      {
+        "title": "Supervivencia Optimizada con Paper",
+        "description": "Disfruta de una experiencia de supervivencia sin lag y estable gracias al poder del software de servidor Paper."
+      },
+      {
+        "title": "Amplia Compatibilidad de Versiones",
+        "description": "Juega en tu versión preferida, ya que LuminaKraft World soporta clientes desde 1.9.x hasta 1.21.x."
+      },
+      {
+        "title": "Jugabilidad Mejorada con Plugins",
+        "description": "Descubre una variedad de plugins personalizados que añaden características emocionantes y mejoran la experiencia general de supervivencia."
+      },
+      {
+        "title": "Comunidad Próspera",
+        "description": "Forma parte de una comunidad amigable y activa de jugadores que comparten tu pasión por la supervivencia y la aventura."
+      }
+    ],
+    "onepieceworld": [
+      {
+        "title": "Frutas del Diablo",
+        "description": "¡Consume frutas poderosas que te otorgarán habilidades especiales, pero cuidado con el mar!"
+      },
+      {
+        "title": "Haki y Estilos de Lucha",
+        "description": "Domina el Haki, artes marciales y estilos de combate inspirados en personajes como Sanji o Zoro."
+      },
+      {
+        "title": "Explora la Grand Line",
+        "description": "Navega por islas legendarias, descubre tesoros y enfrenta piratas y marines peligrosos."
+      },
+      {
+        "title": "Aventuras Multijugador",
+        "description": "Únete a una tripulación, enfrenta a otros jugadores o forma alianzas para dominar los mares."
+      }
+    ],
+    "ancientkraft": [
+      {
+        "title": "Sistema de Magia Personalizado",
+        "description": "Domina hechizos únicos y aprovecha el poder de los elementos"
+      },
+      {
+        "title": "Combate Mejorado",
+        "description": "Experimenta batallas emocionantes con mecánicas y habilidades mejoradas"
+      },
+      {
+        "title": "Vasto Mundo por Explorar",
+        "description": "Descubre ruinas antiguas, tesoros ocultos y mazmorras desafiantes"
+      },
+      {
+        "title": "Aventuras Multijugador",
+        "description": "Forma equipo con amigos o únete a una facción para conquistar el mundo juntos"
+      }
+    ],
+    "pt-the_full_course": [
+      {
+        "title": "Exploración",
+        "description": "Descubre un mundo lleno de secretos y sorpresas por descubrir"
+      },
+      {
+        "title": "Comunidad",
+        "description": "Únete a una comunidad amigable y colaborativa de jugadores"
+      },
+      {
+        "title": "Plugins Personalizados",
+        "description": "Disfruta de plugins exclusivos que mejoran tu experiencia de juego"
+      },
+      {
+        "title": "Eventos Regulares",
+        "description": "Participa en eventos especiales y competiciones organizadas por el staff"
+      }
+    ]
   },
   "ui": {
     "status": {

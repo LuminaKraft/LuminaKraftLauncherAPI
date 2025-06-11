@@ -2,34 +2,144 @@
   "modpacks": {
     "ancientkraft_rechapter": {
       "name": "AncientKraft Rechapter",
-      "description": "Dive into a world of ancestral magic and epic adventures. Explore ancient ruins, master arcane arts, and forge your legend in this RPG modpack full of mysteries to discover.",
-      "shortDescription": "Ancestral magic and epic adventures"
+      "description": "The ultimate RPG adventure experience - completely rebuilt with revolutionary magic, next-gen combat, and expanded worlds. Now without LAG!",
+      "shortDescription": "Ultimate RPG adventure rebuilt"
     },
     "onepieceworlds2": {
       "name": "One Piece World S2",
-      "description": "Navigate the most dangerous seas in search of the One Piece. Become a pirate, marine, or revolutionary in this second season full of new adventures, devil fruits, and epic battles.",
-      "shortDescription": "Pirate adventures on the high seas"
+      "description": "Master advanced Haki, discover rare Devil Fruits, and conquer the New World in this enhanced One Piece experience.",
+      "shortDescription": "Enhanced One Piece experience"
     },
     "luminakraft_world": {
       "name": "LuminaKraft World",
-      "description": "Our main survival server where the community gathers to build, explore, and create together. An enhanced vanilla world with plugins that enrich the experience without altering Minecraft's essence.",
-      "shortDescription": "Enhanced community survival"
+      "description": "Custom world, unique dungeons, scaling mobs, skills, economy, land claiming, PvP control, live map.",
+      "shortDescription": "Enhanced survival with custom features"
     },
     "onepieceworld": {
       "name": "One Piece World",
-      "description": "The first season of the One Piece universe in Minecraft. Explore unique islands, gain devil fruit powers, and live epic adventures in the most famous pirate world from anime.",
-      "shortDescription": "The original One Piece world"
+      "description": "Live the great adventure of One Piece: find Devil Fruits and master the seas.",
+      "shortDescription": "The great One Piece adventure"
     },
     "ancientkraft": {
       "name": "AncientKraft",
-      "description": "An adventure and RPG modpack that combines ancient magic with lost technology. Explore mysterious dimensions, build empires, and discover secrets that have remained hidden for millennia.",
-      "shortDescription": "Ancient magic and lost technology"
+      "description": "RPG-style Adventure modpack with custom magic system, custom combat, and more",
+      "shortDescription": "RPG adventure with custom systems"
     },
     "pt-the_full_course": {
       "name": "PT: The Full Course",
-      "description": "A pure vanilla survival server where the classic Minecraft experience is lived to its fullest. Perfect for players seeking the authentic experience without modifications.",
-      "shortDescription": "Authentic vanilla survival"
+      "description": "Flagship survival server with custom plugins and events",
+      "shortDescription": "Flagship survival with events"
     }
+  },
+  "features": {
+    "ancientkraft_rechapter": [
+      {
+        "title": "Revolutionary Magic System",
+        "description": "Experience a completely redesigned magic system with advanced spellcrafting, elemental mastery, and magical progression paths"
+      },
+      {
+        "title": "Next-Gen Combat Mechanics",
+        "description": "Engage in dynamic battles with overhauled combat systems, weapon skills, and tactical abilities that redefine PvP and PvE"
+      },
+      {
+        "title": "Expanded Ancient Realms",
+        "description": "Explore vast reimagined worlds with new biomes, enhanced dungeons, legendary artifacts, and secrets waiting to be discovered"
+      },
+      {
+        "title": "Enhanced Guild Systems",
+        "description": "Join improved guilds with advanced progression, territory control, guild wars, and collaborative content based on ancient realms"
+      }
+    ],
+    "onepieceworlds2": [
+      {
+        "title": "Advanced Devil Fruits",
+        "description": "Discover rare and powerful Devil Fruits with unique combinations and evolution mechanics."
+      },
+      {
+        "title": "Advanced Haki System",
+        "description": "Master all three types of Haki with a deep progression system and special techniques."
+      },
+      {
+        "title": "New World Exploration",
+        "description": "Venture into the dangerous New World, where stronger enemies and greater treasures await."
+      },
+      {
+        "title": "Enhanced Multiplayer",
+        "description": "Create your own pirate crew, establish territories, and engage in epic naval battles."
+      }
+    ],
+    "luminakraft_world": [
+      {
+        "title": "Optimized Survival with Paper",
+        "description": "Enjoy a lag-free and stable survival experience thanks to the power of Paper server software."
+      },
+      {
+        "title": "Wide Version Compatibility",
+        "description": "Play on your preferred version, as LuminaKraft World supports clients from 1.9.x all the way up to 1.21.x."
+      },
+      {
+        "title": "Enhanced Gameplay with Plugins",
+        "description": "Discover a variety of custom plugins that add exciting features and improve the overall survival experience."
+      },
+      {
+        "title": "Thriving Community",
+        "description": "Become part of a friendly and active community of players who share your passion for survival and adventure."
+      }
+    ],
+    "onepieceworld": [
+      {
+        "title": "Devil Fruits",
+        "description": "Consume powerful fruits that will grant you special abilities, but beware of the sea!"
+      },
+      {
+        "title": "Haki and Fighting Styles",
+        "description": "Master Haki, martial arts and combat styles inspired by characters like Sanji or Zoro."
+      },
+      {
+        "title": "Explore the Grand Line",
+        "description": "Navigate through legendary islands, discover treasures and face dangerous pirates and marines."
+      },
+      {
+        "title": "Multiplayer Adventures",
+        "description": "Join a crew, face other players, or form alliances to dominate the seas."
+      }
+    ],
+    "ancientkraft": [
+      {
+        "title": "Custom Magic System",
+        "description": "Master unique spells and harness the power of the elements"
+      },
+      {
+        "title": "Enhanced Combat",
+        "description": "Experience thrilling battles with improved mechanics and abilities"
+      },
+      {
+        "title": "Vast World to Explore",
+        "description": "Discover ancient ruins, hidden treasures, and challenging dungeons"
+      },
+      {
+        "title": "Multiplayer Adventures",
+        "description": "Team up with friends or join a faction to conquer the world together"
+      }
+    ],
+    "pt-the_full_course": [
+      {
+        "title": "Exploration",
+        "description": "Discover a world full of secrets and surprises to uncover"
+      },
+      {
+        "title": "Community",
+        "description": "Join a friendly and collaborative community of players"
+      },
+      {
+        "title": "Custom Plugins",
+        "description": "Enjoy exclusive plugins that enhance your gaming experience"
+      },
+      {
+        "title": "Regular Events",
+        "description": "Participate in special events and competitions organized by the staff"
+      }
+    ]
   },
   "ui": {
     "status": {

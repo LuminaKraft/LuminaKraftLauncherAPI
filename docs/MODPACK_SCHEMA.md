@@ -67,6 +67,7 @@ Las descripciones y textos se obtienen desde archivos JSON de traducciones separ
 - `/v1/translations` - Lista idiomas disponibles
 - `/v1/translations/es` - Traducciones en español
 - `/v1/translations/en` - Traducciones en inglés
+- `/v1/modpacks/:id/features/:lang` - Características específicas de un modpack
 
 Estructura de traducciones:
 ```json
@@ -78,6 +79,14 @@ Estructura de traducciones:
       "shortDescription": "Descripción corta"
     }
   },
+  "features": {
+    "modpack_id": [
+      {
+        "title": "Título de la característica",
+        "description": "Descripción detallada de la característica"
+      }
+    ]
+  },
   "ui": {
     "status": { "new": "Nuevo", "active": "Activo" },
     "modloader": { "forge": "Forge", "fabric": "Fabric" },
@@ -85,6 +94,13 @@ Estructura de traducciones:
   }
 }
 ```
+
+### Sistema de Características (Features)
+Cada servidor/modpack tiene características específicas que se muestran como tarjetas en la web:
+- Cada característica tiene un `title` y `description`
+- Se obtienen mediante el endpoint `/v1/modpacks/:id/features/:lang`
+- Están completamente traducidas en español e inglés
+- Permiten mostrar información detallada sobre las funcionalidades únicas de cada servidor
 
 ## Ejemplo Completo
 
