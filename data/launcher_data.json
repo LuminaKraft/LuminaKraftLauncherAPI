@@ -8,42 +8,117 @@
   "modpacks": [
     {
       "id": "volcania_s1",
-      "nombre": "LuminaKraft: Volcania S1",
+      "name": "LuminaKraft: Volcania S1",
+      "slug": "volcania_s1",
       "descripcion": "Un modpack de aventura y magia ambientado en un mundo volcánico. Explora dimensiones ardientes, domina la magia elemental y construye tu imperio en tierras de lava y fuego.",
+      "descriptionKey": "volcania_s1-desc",
       "version": "1.2.3",
       "minecraftVersion": "1.18.2",
       "modloader": "forge",
       "modloaderVersion": "40.2.0",
+      "gamemode": "RPG / Aventura / Magia",
+      "isNew": false,
+      "isActive": true,
+      "isComingSoon": false,
+      "images": [
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/volcania_s1/screenshot1.webp",
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/volcania_s1/screenshot2.webp",
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/volcania_s1/screenshot3.webp",
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/volcania_s1/screenshot4.webp",
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/volcania_s1/screenshot5.webp"
+      ],
+      "logo": "https://f005.backblazeb2.com/file/luminakraft-assets/logos/volcania_s1.webp",
       "urlIcono": "https://f005.backblazeb2.com/file/luminakraft-assets/icons/volcania_s1.png",
       "urlModpackZip": "https://f005.backblazeb2.com/file/luminakraft-modpacks/volcania_s1_v1.2.3.zip",
+      "collaborators": [
+        {
+          "name": "LuminaKraft Studios",
+          "logo": "https://f005.backblazeb2.com/file/luminakraft-assets/logos/luminakraft_studios.webp"
+        }
+      ],
       "changelog": "v1.2.3: Añadidos nuevos biomas volcánicos, corregidos bugs de rendimiento, actualizado Create mod a última versión",
-      "jvmArgsRecomendados": "-Xmx4G -Xms2G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200"
+      "jvmArgsRecomendados": "-Xmx4G -Xms2G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
+      "youtubeEmbed": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "featureIcons": ["fa-fire", "fa-magic", "fa-mountain", "fa-users", "fa-cogs"]
     },
     {
       "id": "technika_s3",
-      "nombre": "LuminaKraft: Technika S3",
-      "descripcion": "Modpack tecnológico y industrial para constructores avanzados. Domina la automatización, las fábricas complejas y la ingeniería de alta tecnología.",
+      "name": "LuminaKraft: Technika S3",
+      "slug": "technika_s3",
+      "descripcion": "Modpack tecnológico e industrial para constructores avanzados. Domina la automatización, las fábricas complejas y la ingeniería de alta tecnología.",
+      "descriptionKey": "technika_s3-desc",
       "version": "3.1.0",
       "minecraftVersion": "1.19.2",
       "modloader": "fabric",
       "modloaderVersion": "0.14.21",
+      "gamemode": "Tecnológico / Industrial",
+      "isNew": true,
+      "isActive": true,
+      "isComingSoon": false,
+      "images": [
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/technika_s3/screenshot1.webp",
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/technika_s3/screenshot2.webp",
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/technika_s3/screenshot3.webp",
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/technika_s3/screenshot4.webp",
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/technika_s3/screenshot5.webp",
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/technika_s3/screenshot6.webp"
+      ],
+      "logo": "https://f005.backblazeb2.com/file/luminakraft-assets/logos/technika_s3.webp",
       "urlIcono": "https://f005.backblazeb2.com/file/luminakraft-assets/icons/technika_s3.png",
       "urlModpackZip": "https://f005.backblazeb2.com/file/luminakraft-modpacks/technika_s3_v3.1.0.zip",
+      "collaborators": [
+        {
+          "name": "LuminaKraft Studios",
+          "logo": "https://f005.backblazeb2.com/file/luminakraft-assets/logos/luminakraft_studios.webp"
+        },
+        {
+          "name": "Tech Innovators",
+          "logo": "https://f005.backblazeb2.com/file/luminakraft-assets/logos/tech_innovators.webp"
+        }
+      ],
       "changelog": "v3.1.0: Nuevo sistema de logística con Applied Energistics 2, mejoras en Industrial Revolution, optimizaciones de rendimiento",
-      "jvmArgsRecomendados": "-Xmx6G -Xms3G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200"
+      "jvmArgsRecomendados": "-Xmx6G -Xms3G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
+      "youtubeEmbed": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "featureIcons": ["fa-cogs", "fa-industry", "fa-robot", "fa-users", "fa-microchip"]
     },
     {
       "id": "mystica_origins",
-      "nombre": "LuminaKraft: Mystica Origins",
+      "name": "LuminaKraft: Mystica Origins",
+      "slug": "mystica_origins",
       "descripcion": "Aventúrate en un mundo lleno de magia antigua, criaturas místicas y artefactos poderosos. Elige tu origen y forja tu destino en este RPG mágico.",
+      "descriptionKey": "mystica_origins-desc",
       "version": "2.0.1",
       "minecraftVersion": "1.20.1",
       "modloader": "neoforge",
       "modloaderVersion": "47.1.3",
+      "gamemode": "RPG / Magia / Aventura",
+      "isNew": false,
+      "isActive": false,
+      "isComingSoon": true,
+      "images": [
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/mystica_origins/screenshot1.webp",
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/mystica_origins/screenshot2.webp",
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/mystica_origins/screenshot3.webp",
+        "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/mystica_origins/screenshot4.webp"
+      ],
+      "logo": "https://f005.backblazeb2.com/file/luminakraft-assets/logos/mystica_origins.webp",
       "urlIcono": "https://f005.backblazeb2.com/file/luminakraft-assets/icons/mystica_origins.png",
       "urlModpackZip": "https://f005.backblazeb2.com/file/luminakraft-modpacks/mystica_origins_v2.0.1.zip",
+      "collaborators": [
+        {
+          "name": "LuminaKraft Studios",
+          "logo": "https://f005.backblazeb2.com/file/luminakraft-assets/logos/luminakraft_studios.webp"
+        },
+        {
+          "name": "Mystic Realms",
+          "logo": "https://f005.backblazeb2.com/file/luminakraft-assets/logos/mystic_realms.webp"
+        }
+      ],
       "changelog": "v2.0.1: Nuevas razas jugables, sistema de magia renovado, dungeons procedurales mejorados",
-      "jvmArgsRecomendados": "-Xmx5G -Xms2G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200"
+      "jvmArgsRecomendados": "-Xmx5G -Xms2G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
+      "youtubeEmbed": "",
+      "tiktokEmbed": "7489933381099179286",
+      "featureIcons": ["fa-magic", "fa-dragon", "fa-scroll", "fa-users", "fa-gem"]
     }
   ]
 } 
