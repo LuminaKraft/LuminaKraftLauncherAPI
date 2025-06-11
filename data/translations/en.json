@@ -1,0 +1,56 @@
+{
+  "modpacks": {
+    "ancientkraft_rechapter": {
+      "name": "AncientKraft Rechapter",
+      "description": "Dive into a world of ancestral magic and epic adventures. Explore ancient ruins, master arcane arts, and forge your legend in this RPG modpack full of mysteries to discover.",
+      "shortDescription": "Ancestral magic and epic adventures"
+    },
+    "onepieceworlds2": {
+      "name": "One Piece World S2",
+      "description": "Navigate the most dangerous seas in search of the One Piece. Become a pirate, marine, or revolutionary in this second season full of new adventures, devil fruits, and epic battles.",
+      "shortDescription": "Pirate adventures on the high seas"
+    },
+    "luminakraft_world": {
+      "name": "LuminaKraft World",
+      "description": "Our main survival server where the community gathers to build, explore, and create together. An enhanced vanilla world with plugins that enrich the experience without altering Minecraft's essence.",
+      "shortDescription": "Enhanced community survival"
+    },
+    "onepieceworld": {
+      "name": "One Piece World",
+      "description": "The first season of the One Piece universe in Minecraft. Explore unique islands, gain devil fruit powers, and live epic adventures in the most famous pirate world from anime.",
+      "shortDescription": "The original One Piece world"
+    },
+    "ancientkraft": {
+      "name": "AncientKraft",
+      "description": "An adventure and RPG modpack that combines ancient magic with lost technology. Explore mysterious dimensions, build empires, and discover secrets that have remained hidden for millennia.",
+      "shortDescription": "Ancient magic and lost technology"
+    },
+    "pt-the_full_course": {
+      "name": "PT: The Full Course",
+      "description": "A pure vanilla survival server where the classic Minecraft experience is lived to its fullest. Perfect for players seeking the authentic experience without modifications.",
+      "shortDescription": "Authentic vanilla survival"
+    }
+  },
+  "ui": {
+    "status": {
+      "new": "New",
+      "active": "Active",
+      "coming_soon": "Coming Soon",
+      "inactive": "Inactive"
+    },
+    "modloader": {
+      "forge": "Forge",
+      "fabric": "Fabric",
+      "neoforge": "NeoForge",
+      "paper": "Paper",
+      "vanilla": "Vanilla"
+    },
+    "gamemode": {
+      "rpg": "RPG",
+      "adventure": "Adventure",
+      "survival": "Survival",
+      "technology": "Technology",
+      "magic": "Magic"
+    }
+  }
+} 

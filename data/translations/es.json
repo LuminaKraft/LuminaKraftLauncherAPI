@@ -1,0 +1,56 @@
+{
+  "modpacks": {
+    "ancientkraft_rechapter": {
+      "name": "AncientKraft Rechapter",
+      "description": "Sumérgete en un mundo de magia ancestral y aventuras épicas. Explora ruinas antiguas, domina artes arcanas y forja tu leyenda en este modpack RPG lleno de misterios por descubrir.",
+      "shortDescription": "Magia ancestral y aventuras épicas"
+    },
+    "onepieceworlds2": {
+      "name": "One Piece World S2",
+      "description": "Navega por los mares más peligrosos en busca del One Piece. Conviértete en pirata, marine o revolucionario en esta segunda temporada llena de nuevas aventuras, frutas del diablo y batallas épicas.",
+      "shortDescription": "Aventuras piratas en alta mar"
+    },
+    "luminakraft_world": {
+      "name": "LuminaKraft World",
+      "description": "Nuestro servidor de supervivencia principal donde la comunidad se reúne para construir, explorar y crear juntos. Un mundo vanilla mejorado con plugins que enriquecen la experiencia sin alterar la esencia de Minecraft.",
+      "shortDescription": "Supervivencia comunitaria mejorada"
+    },
+    "onepieceworld": {
+      "name": "One Piece World",
+      "description": "La primera temporada del universo One Piece en Minecraft. Explora islas únicas, obtén poderes de frutas del diablo y vive aventuras épicas en el mundo de los piratas más famoso del anime.",
+      "shortDescription": "El mundo de One Piece original"
+    },
+    "ancientkraft": {
+      "name": "AncientKraft",
+      "description": "Un modpack de aventura y RPG que combina magia antigua con tecnología perdida. Explora dimensiones misteriosas, construye imperios y descubre secretos que han permanecido ocultos durante milenios.",
+      "shortDescription": "Magia antigua y tecnología perdida"
+    },
+    "pt-the_full_course": {
+      "name": "PT: The Full Course",
+      "description": "Un servidor de supervivencia vanilla puro donde la experiencia clásica de Minecraft se vive en su máxima expresión. Perfecto para jugadores que buscan la experiencia auténtica sin modificaciones.",
+      "shortDescription": "Supervivencia vanilla auténtica"
+    }
+  },
+  "ui": {
+    "status": {
+      "new": "Nuevo",
+      "active": "Activo",
+      "coming_soon": "Próximamente",
+      "inactive": "Inactivo"
+    },
+    "modloader": {
+      "forge": "Forge",
+      "fabric": "Fabric",
+      "neoforge": "NeoForge",
+      "paper": "Paper",
+      "vanilla": "Vanilla"
+    },
+    "gamemode": {
+      "rpg": "RPG",
+      "adventure": "Aventura",
+      "survival": "Supervivencia",
+      "technology": "Tecnológico",
+      "magic": "Magia"
+    }
+  }
+} 

@@ -100,6 +100,62 @@ app.get('/v1/modpacks', (req, res) => {
   }
 });
 
+// Translations endpoint
+app.get('/v1/translations/:lang', (req, res) => {
+  try {
+    const lang = req.params.lang;
+    const supportedLangs = ['es', 'en'];
+    
+    if (!supportedLangs.includes(lang)) {
+      return res.status(404).json({
+        error: 'Language not supported',
+        message: `Language '${lang}' is not supported. Available languages: ${supportedLangs.join(', ')}`
+      });
+    }
+    
+    const translationPath = path.join(__dirname, `../data/translations/${lang}.json`);
+    
+    if (!fs.existsSync(translationPath)) {
+      return res.status(404).json({
+        error: 'Translation file not found',
+        message: `Translation file for language '${lang}' does not exist`
+      });
+    }
+    
+    const translations = JSON.parse(fs.readFileSync(translationPath, 'utf8'));
+    res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
+    res.json(translations);
+  } catch (error) {
+    console.error('Error reading translation data:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: 'Failed to read translation data'
+    });
+  }
+});
+
+// Available languages endpoint
+app.get('/v1/translations', (req, res) => {
+  try {
+    const translationsDir = path.join(__dirname, '../data/translations');
+    const files = fs.readdirSync(translationsDir);
+    const languages = files
+      .filter(file => file.endsWith('.json'))
+      .map(file => file.replace('.json', ''));
+    
+    res.json({
+      availableLanguages: languages,
+      defaultLanguage: 'es'
+    });
+  } catch (error) {
+    console.error('Error reading translations directory:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: 'Failed to read available languages'
+    });
+  }
+});
+
 // API info endpoint
 app.get('/v1/info', (req, res) => {
   const packageJson = require('../package.json');
@@ -112,6 +168,8 @@ app.get('/v1/info', (req, res) => {
       'GET /v1/launcher_data.json - Complete launcher data',
       'GET /v1/modpacks - List all modpacks',
       'GET /v1/modpacks/:id - Get specific modpack',
+      'GET /v1/translations - Available languages',
+      'GET /v1/translations/:lang - Get translations for language',
       'GET /v1/info - API information'
     ]
   });
@@ -127,6 +185,8 @@ app.use('*', (req, res) => {
       '/v1/launcher_data.json',
       '/v1/modpacks',
       '/v1/modpacks/:id',
+      '/v1/translations',
+      '/v1/translations/:lang',
       '/v1/info'
     ]
   });

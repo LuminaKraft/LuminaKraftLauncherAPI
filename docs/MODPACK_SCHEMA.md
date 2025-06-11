@@ -23,11 +23,9 @@ Esta documentación describe la nueva estructura híbrida que combina lo mejor d
 ### Campos Básicos (Requeridos)
 - `id`: Identificador único del modpack (string)
 - `name`: Nombre completo del modpack (string)
-- `slug`: URL-friendly identifier para rutas web (string)
-- `descripcion`: Descripción detallada en español (string)
 - `version`: Versión actual del modpack (string)
 - `minecraftVersion`: Versión de Minecraft requerida (string)
-- `modloader`: Tipo de modloader (forge/fabric/neoforge/quilt) (string)
+- `modloader`: Tipo de modloader (forge/fabric/neoforge/paper/vanilla) (string)
 - `modloaderVersion`: Versión específica del modloader (string)
 
 ### Campos de Estado
@@ -61,43 +59,63 @@ Esta documentación describe la nueva estructura híbrida que combina lo mejor d
 
 ### Campos Adicionales de la Web
 - `gamemode`: Categoría/género del modpack (string)
-- `descriptionKey`: Clave para traducciones i18n (string)
 - `leaderboardPath`: Ruta al archivo de leaderboard (string, opcional)
 - `ip`: IP del servidor si aplica (string, opcional)
+
+### Sistema de Traducciones
+Las descripciones y textos se obtienen desde archivos JSON de traducciones separados:
+- `/v1/translations` - Lista idiomas disponibles
+- `/v1/translations/es` - Traducciones en español
+- `/v1/translations/en` - Traducciones en inglés
+
+Estructura de traducciones:
+```json
+{
+  "modpacks": {
+    "modpack_id": {
+      "name": "Nombre del modpack",
+      "description": "Descripción completa",
+      "shortDescription": "Descripción corta"
+    }
+  },
+  "ui": {
+    "status": { "new": "Nuevo", "active": "Activo" },
+    "modloader": { "forge": "Forge", "fabric": "Fabric" },
+    "gamemode": { "rpg": "RPG", "survival": "Supervivencia" }
+  }
+}
+```
 
 ## Ejemplo Completo
 
 ```json
 {
-  "id": "volcania_s1",
-  "name": "LuminaKraft: Volcania S1",
-  "slug": "volcania_s1",
-  "descripcion": "Un modpack de aventura y magia ambientado en un mundo volcánico.",
-  "descriptionKey": "volcania_s1-desc",
-  "version": "1.2.3",
-  "minecraftVersion": "1.18.2",
+  "id": "ancientkraft_rechapter",
+  "name": "AncientKraft Rechapter",
+  "version": "1.0.0",
+  "minecraftVersion": "1.20.1",
   "modloader": "forge",
-  "modloaderVersion": "40.2.0",
-  "gamemode": "RPG / Aventura / Magia",
+  "modloaderVersion": "47.1.3",
+  "gamemode": "RPG / Aventura",
   "isNew": false,
-  "isActive": true,
-  "isComingSoon": false,
+  "isActive": false,
+  "isComingSoon": true,
   "images": [
-    "https://f005.backblazeb2.com/file/luminakraft-assets/screenshots/volcania_s1/screenshot1.webp"
+    "https://f005.backblazeb2.com/file/luminakraft-assets/servers/ancientkraft_rechapter/screenshot1.webp"
   ],
-  "logo": "https://f005.backblazeb2.com/file/luminakraft-assets/logos/volcania_s1.webp",
-  "urlIcono": "https://f005.backblazeb2.com/file/luminakraft-assets/icons/volcania_s1.png",
-  "urlModpackZip": "https://f005.backblazeb2.com/file/luminakraft-modpacks/volcania_s1_v1.2.3.zip",
+  "logo": "https://f005.backblazeb2.com/file/luminakraft-assets/servers/ancientkraft_rechapter/logo.webp",
+  "urlIcono": "https://f005.backblazeb2.com/file/luminakraft-assets/servers/ancientkraft_rechapter/logo.webp",
+  "urlModpackZip": "https://f005.backblazeb2.com/file/luminakraft-modpacks/ancientkraft_rechapter_v1.0.0.zip",
   "collaborators": [
     {
       "name": "LuminaKraft Studios",
-      "logo": "https://f005.backblazeb2.com/file/luminakraft-assets/logos/luminakraft_studios.webp"
+      "logo": "https://f005.backblazeb2.com/file/luminakraft-assets/favicon.webp"
     }
   ],
-  "changelog": "v1.2.3: Añadidos nuevos biomas volcánicos...",
-  "jvmArgsRecomendados": "-Xmx4G -Xms2G -XX:+UseG1GC",
-  "youtubeEmbed": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-  "featureIcons": ["fa-fire", "fa-magic", "fa-mountain", "fa-users", "fa-cogs"]
+  "changelog": "Versión inicial de AncientKraft Rechapter",
+  "jvmArgsRecomendados": "-Xmx6G -Xms3G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
+  "youtubeEmbed": "",
+  "featureIcons": ["fa-magic", "fa-fist-raised", "fa-map-marked-alt", "fa-users"]
 }
 ```
 
