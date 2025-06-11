@@ -18,20 +18,20 @@
       "isActive": false,
       "isComingSoon": true,
       "images": [
-        "/imgs/servers/ancientkraft_rechapter/screenshot1.webp",
-        "/imgs/servers/ancientkraft_rechapter/screenshot2.webp",
-        "/imgs/servers/ancientkraft_rechapter/screenshot3.webp",
-        "/imgs/servers/ancientkraft_rechapter/screenshot4.webp",
-        "/imgs/servers/ancientkraft_rechapter/screenshot5.webp",
-        "/imgs/servers/ancientkraft_rechapter/screenshot6.webp"
+        "https://luminakraft.com/imgs/servers/ancientkraft_rechapter/screenshot1.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft_rechapter/screenshot2.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft_rechapter/screenshot3.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft_rechapter/screenshot4.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft_rechapter/screenshot5.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft_rechapter/screenshot6.webp"
       ],
-      "logo": "/imgs/servers/ancientkraft_rechapter/logo.webp",
-      "urlIcono": "/imgs/servers/ancientkraft_rechapter/logo.webp",
+      "logo": "https://luminakraft.com/imgs/servers/ancientkraft_rechapter/logo.webp",
+      "urlIcono": "https://luminakraft.com/imgs/servers/ancientkraft_rechapter/logo.webp",
       "urlModpackZip": "https://f005.backblazeb2.com/file/luminakraft-modpacks/ancientkraft_rechapter_v1.0.0.zip",
       "collaborators": [
         {
           "name": "LuminaKraft Studios",
-          "logo": "/imgs/favicon.webp"
+          "logo": "https://luminakraft.com/imgs/favicon.webp"
         }
       ],
       "changelog": "Versión inicial de AncientKraft Rechapter",
@@ -51,19 +51,19 @@
       "isActive": false,
       "isComingSoon": true,
       "images": [
-        "/imgs/servers/onepieceworlds2/screenshot1.webp",
-        "/imgs/servers/onepieceworlds2/screenshot2.webp",
-        "/imgs/servers/onepieceworlds2/screenshot3.webp",
-        "/imgs/servers/onepieceworlds2/screenshot4.webp",
-        "/imgs/servers/onepieceworlds2/screenshot5.webp"
+        "https://luminakraft.com/imgs/servers/onepieceworlds2/screenshot1.webp",
+        "https://luminakraft.com/imgs/servers/onepieceworlds2/screenshot2.webp",
+        "https://luminakraft.com/imgs/servers/onepieceworlds2/screenshot3.webp",
+        "https://luminakraft.com/imgs/servers/onepieceworlds2/screenshot4.webp",
+        "https://luminakraft.com/imgs/servers/onepieceworlds2/screenshot5.webp"
       ],
-      "logo": "/imgs/servers/onepieceworlds2/logo.webp",
-      "urlIcono": "/imgs/servers/onepieceworlds2/logo.webp",
+      "logo": "https://luminakraft.com/imgs/servers/onepieceworlds2/logo.webp",
+      "urlIcono": "https://luminakraft.com/imgs/servers/onepieceworlds2/logo.webp",
       "urlModpackZip": "https://f005.backblazeb2.com/file/luminakraft-modpacks/onepieceworlds2_v1.0.0.zip",
       "collaborators": [
         {
           "name": "LuminaKraft Studios",
-          "logo": "/imgs/favicon.webp"
+          "logo": "https://luminakraft.com/imgs/favicon.webp"
         }
       ],
       "changelog": "Versión inicial de One Piece World S2",
@@ -83,17 +83,17 @@
       "isActive": false,
       "isComingSoon": false,
       "images": [
-        "/imgs/servers/luminakraft_world/screenshot1.webp",
-        "/imgs/servers/luminakraft_world/screenshot2.webp",
-        "/imgs/servers/luminakraft_world/screenshot3.webp"
+        "https://luminakraft.com/imgs/servers/luminakraft_world/screenshot1.webp",
+        "https://luminakraft.com/imgs/servers/luminakraft_world/screenshot2.webp",
+        "https://luminakraft.com/imgs/servers/luminakraft_world/screenshot3.webp"
       ],
-      "logo": "/imgs/servers/luminakraft_world/logo.webp",
-      "urlIcono": "/imgs/servers/luminakraft_world/logo.webp",
+      "logo": "https://luminakraft.com/imgs/servers/luminakraft_world/logo.webp",
+      "urlIcono": "https://luminakraft.com/imgs/servers/luminakraft_world/logo.webp",
       "urlModpackZip": null,
       "collaborators": [
         {
           "name": "LuminaKraft Studios",
-          "logo": "/imgs/favicon.webp"
+          "logo": "https://luminakraft.com/imgs/favicon.webp"
         }
       ],
       "changelog": "Servidor de supervivencia vanilla con plugins",
@@ -116,20 +116,20 @@
       "isActive": false,
       "isComingSoon": false,
       "images": [
-        "/imgs/servers/onepieceworld/screenshot1.webp",
-        "/imgs/servers/onepieceworld/screenshot2.webp",
-        "/imgs/servers/onepieceworld/screenshot3.webp",
-        "/imgs/servers/onepieceworld/screenshot4.webp",
-        "/imgs/servers/onepieceworld/screenshot5.webp",
-        "/imgs/servers/onepieceworld/screenshot6.webp"
+        "https://luminakraft.com/imgs/servers/onepieceworld/screenshot1.webp",
+        "https://luminakraft.com/imgs/servers/onepieceworld/screenshot2.webp",
+        "https://luminakraft.com/imgs/servers/onepieceworld/screenshot3.webp",
+        "https://luminakraft.com/imgs/servers/onepieceworld/screenshot4.webp",
+        "https://luminakraft.com/imgs/servers/onepieceworld/screenshot5.webp",
+        "https://luminakraft.com/imgs/servers/onepieceworld/screenshot6.webp"
       ],
-      "logo": "/imgs/servers/onepieceworld/logo.webp",
-      "urlIcono": "/imgs/servers/onepieceworld/logo.webp",
+      "logo": "https://luminakraft.com/imgs/servers/onepieceworld/logo.webp",
+      "urlIcono": "https://luminakraft.com/imgs/servers/onepieceworld/logo.webp",
       "urlModpackZip": "https://f005.backblazeb2.com/file/luminakraft-modpacks/onepieceworld_v1.0.0.zip",
       "collaborators": [
         {
           "name": "LuminaKraft Studios",
-          "logo": "/imgs/favicon.webp"
+          "logo": "https://luminakraft.com/imgs/favicon.webp"
         }
       ],
       "changelog": "Versión inicial de One Piece World",
@@ -150,29 +150,29 @@
       "isActive": false,
       "isComingSoon": false,
       "images": [
-        "/imgs/servers/ancientkraft/screenshot1.webp",
-        "/imgs/servers/ancientkraft/screenshot2.webp",
-        "/imgs/servers/ancientkraft/screenshot3.webp",
-        "/imgs/servers/ancientkraft/screenshot4.webp",
-        "/imgs/servers/ancientkraft/screenshot5.webp",
-        "/imgs/servers/ancientkraft/screenshot6.webp",
-        "/imgs/servers/ancientkraft/screenshot7.webp",
-        "/imgs/servers/ancientkraft/screenshot8.webp",
-        "/imgs/servers/ancientkraft/screenshot9.webp",
-        "/imgs/servers/ancientkraft/screenshot10.webp",
-        "/imgs/servers/ancientkraft/screenshot11.webp"
+        "https://luminakraft.com/imgs/servers/ancientkraft/screenshot1.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft/screenshot2.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft/screenshot3.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft/screenshot4.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft/screenshot5.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft/screenshot6.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft/screenshot7.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft/screenshot8.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft/screenshot9.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft/screenshot10.webp",
+        "https://luminakraft.com/imgs/servers/ancientkraft/screenshot11.webp"
       ],
-      "logo": "/imgs/servers/ancientkraft/logo.webp",
-      "urlIcono": "/imgs/servers/ancientkraft/logo.webp",
+      "logo": "https://luminakraft.com/imgs/servers/ancientkraft/logo.webp",
+      "urlIcono": "https://luminakraft.com/imgs/servers/ancientkraft/logo.webp",
       "urlModpackZip": "https://f005.backblazeb2.com/file/luminakraft-modpacks/ancientkraft_v1.0.0.zip",
       "collaborators": [
         {
           "name": "LuminaKraft Studios",
-          "logo": "/imgs/favicon.webp"
+          "logo": "https://luminakraft.com/imgs/favicon.webp"
         },
         {
           "name": "Los Picaos",
-          "logo": "/imgs/servers/ancientkraft/colab.webp"
+          "logo": "https://luminakraft.com/imgs/servers/ancientkraft/colab.webp"
         }
       ],
       "changelog": "Versión inicial de AncientKraft",
@@ -192,23 +192,23 @@
       "isActive": false,
       "isComingSoon": false,
       "images": [
-        "/imgs/servers/pt-the_full_course/screenshot1.webp",
-        "/imgs/servers/pt-the_full_course/screenshot2.webp",
-        "/imgs/servers/pt-the_full_course/screenshot3.webp",
-        "/imgs/servers/pt-the_full_course/screenshot4.webp",
-        "/imgs/servers/pt-the_full_course/screenshot5.webp"
+        "https://luminakraft.com/imgs/servers/pt-the_full_course/screenshot1.webp",
+        "https://luminakraft.com/imgs/servers/pt-the_full_course/screenshot2.webp",
+        "https://luminakraft.com/imgs/servers/pt-the_full_course/screenshot3.webp",
+        "https://luminakraft.com/imgs/servers/pt-the_full_course/screenshot4.webp",
+        "https://luminakraft.com/imgs/servers/pt-the_full_course/screenshot5.webp"
       ],
-      "logo": "/imgs/servers/pt-the_full_course/logo.webp",
-      "urlIcono": "/imgs/servers/pt-the_full_course/logo.webp",
+      "logo": "https://luminakraft.com/imgs/servers/pt-the_full_course/logo.webp",
+      "urlIcono": "https://luminakraft.com/imgs/servers/pt-the_full_course/logo.webp",
       "urlModpackZip": null,
       "collaborators": [
         {
           "name": "LuminaKraft Studios",
-          "logo": "/imgs/favicon.webp"
+          "logo": "https://luminakraft.com/imgs/favicon.webp"
         },
         {
           "name": "PT: The Full Course",
-          "logo": "/imgs/servers/pt-the_full_course/colab.webp"
+          "logo": "https://luminakraft.com/imgs/servers/pt-the_full_course/colab.webp"
         }
       ],
       "changelog": "Versión inicial de PT: The Full Course",
