@@ -1,0 +1,49 @@
+{
+  "launcherVersion": "1.0.0",
+  "launcherDownloadUrls": {
+    "windows": "https://github.com/luminakraft/luminakraft-launcher/releases/latest/download/LuminaKraft-Launcher_x64_en-US.msi",
+    "macos": "https://github.com/luminakraft/luminakraft-launcher/releases/latest/download/LuminaKraft-Launcher_x64.dmg",
+    "linux": "https://github.com/luminakraft/luminakraft-launcher/releases/latest/download/LuminaKraft-Launcher_amd64.AppImage"
+  },
+  "modpacks": [
+    {
+      "id": "volcania_s1",
+      "nombre": "LuminaKraft: Volcania S1",
+      "descripcion": "Un modpack de aventura y magia ambientado en un mundo volcánico. Explora dimensiones ardientes, domina la magia elemental y construye tu imperio en tierras de lava y fuego.",
+      "version": "1.2.3",
+      "minecraftVersion": "1.18.2",
+      "modloader": "forge",
+      "modloaderVersion": "40.2.0",
+      "urlIcono": "https://f005.backblazeb2.com/file/luminakraft-assets/icons/volcania_s1.png",
+      "urlModpackZip": "https://f005.backblazeb2.com/file/luminakraft-modpacks/volcania_s1_v1.2.3.zip",
+      "changelog": "v1.2.3: Añadidos nuevos biomas volcánicos, corregidos bugs de rendimiento, actualizado Create mod a última versión",
+      "jvmArgsRecomendados": "-Xmx4G -Xms2G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200"
+    },
+    {
+      "id": "technika_s3",
+      "nombre": "LuminaKraft: Technika S3",
+      "descripcion": "Modpack tecnológico y industrial para constructores avanzados. Domina la automatización, las fábricas complejas y la ingeniería de alta tecnología.",
+      "version": "3.1.0",
+      "minecraftVersion": "1.19.2",
+      "modloader": "fabric",
+      "modloaderVersion": "0.14.21",
+      "urlIcono": "https://f005.backblazeb2.com/file/luminakraft-assets/icons/technika_s3.png",
+      "urlModpackZip": "https://f005.backblazeb2.com/file/luminakraft-modpacks/technika_s3_v3.1.0.zip",
+      "changelog": "v3.1.0: Nuevo sistema de logística con Applied Energistics 2, mejoras en Industrial Revolution, optimizaciones de rendimiento",
+      "jvmArgsRecomendados": "-Xmx6G -Xms3G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200"
+    },
+    {
+      "id": "mystica_origins",
+      "nombre": "LuminaKraft: Mystica Origins",
+      "descripcion": "Aventúrate en un mundo lleno de magia antigua, criaturas místicas y artefactos poderosos. Elige tu origen y forja tu destino en este RPG mágico.",
+      "version": "2.0.1",
+      "minecraftVersion": "1.20.1",
+      "modloader": "neoforge",
+      "modloaderVersion": "47.1.3",
+      "urlIcono": "https://f005.backblazeb2.com/file/luminakraft-assets/icons/mystica_origins.png",
+      "urlModpackZip": "https://f005.backblazeb2.com/file/luminakraft-modpacks/mystica_origins_v2.0.1.zip",
+      "changelog": "v2.0.1: Nuevas razas jugables, sistema de magia renovado, dungeons procedurales mejorados",
+      "jvmArgsRecomendados": "-Xmx5G -Xms2G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200"
+    }
+  ]
+} 

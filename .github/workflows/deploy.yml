@@ -1,0 +1,81 @@
+name: Deploy LuminaKraft Launcher API
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run tests
+      run: npm test
+      
+    - name: Test Docker build
+      run: docker build -t luminakraft-launcher-api:test .
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Deploy to server via SSH
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        port: ${{ secrets.DEPLOY_PORT }}
+        username: ${{ secrets.DEPLOY_USER }}
+        key: ${{ secrets.DEPLOY_SSH_KEY }}
+        script: |
+          # Navigate to app directory (create if doesn't exist)
+          mkdir -p /opt/luminakraft-launcher-api
+          cd /opt/luminakraft-launcher-api
+          
+          # Clone or update repository
+          if [ -d ".git" ]; then
+            git pull origin main
+          else
+            git clone https://github.com/${{ github.repository }} .
+          fi
+          
+          # Stop existing container
+          docker stop luminakraft-api || true
+          docker rm luminakraft-api || true
+          
+          # Build new image
+          docker build -t luminakraft-launcher-api:latest .
+          
+          # Run new container
+          docker run -d \
+            --name luminakraft-api \
+            --restart unless-stopped \
+            -p 9374:9374 \
+            luminakraft-launcher-api:latest
+          
+          # Clean up old images
+          docker image prune -f
+          
+    - name: Verify deployment
+      run: |
+        sleep 15
+        # Test through your domain once cloudflare tunnel is set up
+        curl -f https://api.luminakraft.com/health || echo "API not accessible via domain yet, check Cloudflare tunnel setup" 

@@ -1,0 +1,35 @@
+{
+  "name": "luminakraft-launcher-api",
+  "version": "1.0.0",
+  "description": "Backend API for LuminaKraft Launcher - serves modpack data and launcher information",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "build": "echo 'No build step needed for this Node.js project'",
+    "test": "echo 'Tests not implemented yet'"
+  },
+  "keywords": [
+    "minecraft",
+    "launcher",
+    "modpack",
+    "api",
+    "luminakraft"
+  ],
+  "author": "LuminaKraft Studios",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "compression": "^1.7.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+} 
