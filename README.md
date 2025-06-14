@@ -574,4 +574,86 @@ npm run test:translations
 **Desarrollador**: Kristian García  
 **Repositorio**: [kristiangarcia/luminakraft-launcher-api](https://github.com/kristiangarcia/luminakraft-launcher-api)  
 **Estado del Servicio**: https://api.luminakraft.com/health  
-**Documentación**: [MODPACK_SCHEMA.md](docs/MODPACK_SCHEMA.md) 
+**Documentación**: [MODPACK_SCHEMA.md](docs/MODPACK_SCHEMA.md)
+
+## Environment Variables
+
+- `PORT`: Port number for the server (default: 9374)
+- `CURSEFORGE_API_KEY`: API key for CurseForge integration
+
+## API Endpoints
+
+### Health Check
+- `GET /health`: Check API health status
+
+### Launcher Data
+- `GET /v1/launcher_data.json`: Get complete launcher data
+- `GET /v1/modpacks`: List all available modpacks
+- `GET /v1/modpacks/:id`: Get specific modpack data
+- `GET /v1/modpacks/:id/features/:lang`: Get modpack features in specific language
+
+### Translations
+- `GET /v1/translations`: List available languages
+- `GET /v1/translations/:lang`: Get translations for specific language
+
+### CurseForge Integration
+- `GET /curseforge/mod/:projectId/file/:fileId`: Get mod file information from CurseForge
+  - Response format:
+    ```json
+    {
+      "name": "mod-file-name.jar",
+      "download_url": "https://example.com/download/mod.jar"
+    }
+    ```
+  - Error responses:
+    - 503: CurseForge API key not configured
+    - 404: Mod or file not found
+    - 500: Internal server error
+
+### API Info
+- `GET /v1/info`: Get API information and available endpoints
+
+## Development
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Set environment variables:
+   ```bash
+   export PORT=9374
+   export CURSEFORGE_API_KEY=your_api_key_here
+   ```
+
+3. Run development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Run tests:
+   ```bash
+   npm test
+   ```
+
+## Production
+
+1. Set environment variables as needed
+2. Run production server:
+   ```bash
+   npm start
+   ```
+
+## Docker
+
+1. Build image:
+   ```bash
+   docker build -t luminakraft-launcher-api .
+   ```
+
+2. Run container:
+   ```bash
+   docker run -p 9374:9374 \
+     -e CURSEFORGE_API_KEY=your_api_key_here \
+     luminakraft-launcher-api
+   ``` 
