@@ -25,6 +25,8 @@ jobs:
       
     - name: Run tests
       run: npm test
+      env:
+        CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
       
     - name: Test Docker build
       run: docker build -t luminakraft-launcher-api:test .
@@ -109,11 +111,12 @@ jobs:
           # Build new image
           docker build -t luminakraft-launcher-api:latest .
           
-          # Run new container
+          # Run new container with CurseForge API key
           docker run -d \
             --name luminakraft-api \
             --restart unless-stopped \
             -p 9374:9374 \
+            -e CURSEFORGE_API_KEY="${{ secrets.CURSEFORGE_API_KEY }}" \
             luminakraft-launcher-api:latest
           
           # Show container status

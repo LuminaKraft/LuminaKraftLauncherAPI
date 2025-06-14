@@ -5,9 +5,19 @@ const morgan = require('morgan');
 const compression = require('compression');
 const path = require('path');
 const fs = require('fs');
+const axios = require('axios');
 
 const app = express();
 const PORT = process.env.PORT || 9374;
+
+// Load CurseForge API key from environment variable
+const CURSEFORGE_API_KEY = process.env.CURSEFORGE_API_KEY;
+if (!CURSEFORGE_API_KEY) {
+  console.warn('CURSEFORGE_API_KEY environment variable not set. CurseForge endpoints will not work.');
+}
+
+// CurseForge API base URL
+const CURSEFORGE_API_BASE = 'https://api.curseforge.com/v1';
 
 // Middleware
 app.use(helmet());
@@ -220,6 +230,41 @@ app.get('/v1/info', (req, res) => {
       'GET /v1/info - API information'
     ]
   });
+});
+
+// CurseForge endpoints
+app.get('/curseforge/mod/:projectId/file/:fileId', async (req, res) => {
+  try {
+    if (!CURSEFORGE_API_KEY) {
+      return res.status(503).json({ error: 'CurseForge API not configured' });
+    }
+
+    const { projectId, fileId } = req.params;
+
+    // Get mod file info from CurseForge
+    const response = await axios.get(
+      `${CURSEFORGE_API_BASE}/mods/${projectId}/files/${fileId}/download-url`,
+      {
+        headers: {
+          'Accept': 'application/json',
+          'x-api-key': CURSEFORGE_API_KEY
+        }
+      }
+    );
+
+    // Get the actual file name from the URL
+    const fileName = response.data.data.split('/').pop();
+
+    res.json({
+      download_url: response.data.data,
+      file_name: fileName
+    });
+  } catch (error) {
+    console.error('CurseForge API error:', error.response?.data || error.message);
+    res.status(error.response?.status || 500).json({
+      error: 'Failed to get mod information from CurseForge'
+    });
+  }
 });
 
 // 404 handler
