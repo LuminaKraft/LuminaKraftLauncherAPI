@@ -16,7 +16,7 @@ console.log(`[INFO] API base URL: ${CURSEFORGE_API_BASE}`);
 console.log(`[INFO] Minecraft Game ID: ${MINECRAFT_GAME_ID}`);
 console.log(`[INFO] API Key configured: ${process.env.CURSEFORGE_API_KEY ? 'Yes' : 'No'}`);
 
-// Añadir endpoint para download-url que no existe actualmente
+// Add endpoint for download-url that doesn't exist currently
 router.get('/mods/:modId/files/:fileId/download-url', async (req, res) => {
   try {
     const { modId, fileId } = req.params;
