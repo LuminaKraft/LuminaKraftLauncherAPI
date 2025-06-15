@@ -13,19 +13,47 @@ const curseforgeRouter = require('./curseforge');
 const app = express();
 const PORT = process.env.PORT || 9374;
 
+// Compartir la API key corregida con el resto de la aplicación
+
 // Load CurseForge API key from environment variable
-const CURSEFORGE_API_KEY = process.env.CURSEFORGE_API_KEY;
+let CURSEFORGE_API_KEY = process.env.CURSEFORGE_API_KEY;
+
+// Fix para el problema de Docker Compose con los símbolos $ en la API key
+// Docker Compose elimina un $ cuando hay dos $$ consecutivos
+if (CURSEFORGE_API_KEY && CURSEFORGE_API_KEY.includes('$')) {
+  console.log('[INFO] La API key contiene símbolos $, verificando si necesita corrección...');
+  
+  // Si la API key debería comenzar con $2a$10$ (formato bcrypt común) pero falta algún $
+  if (CURSEFORGE_API_KEY.startsWith('2a') || CURSEFORGE_API_KEY.startsWith('a$10')) {
+    console.log('[INFO] Detectada API key con formato bcrypt que ha perdido símbolos $');
+    // Restaurar el formato correcto
+    CURSEFORGE_API_KEY = '$2a$10$' + CURSEFORGE_API_KEY.replace(/^\$?2a\$?\$?10\$?/, '');
+    console.log('[INFO] API key corregida con formato bcrypt estándar');
+  }
+}
+
 if (!CURSEFORGE_API_KEY) {
   console.warn('CURSEFORGE_API_KEY environment variable not set. CurseForge endpoints will not work.');
 } else {
   console.log(`[DEBUG] CURSEFORGE_API_KEY encontrada en index.js. Longitud: ${CURSEFORGE_API_KEY.length} caracteres`);
-  console.log(`[DEBUG] Primeros 5 caracteres: ${CURSEFORGE_API_KEY.substring(0, 5)}...`);
-  console.log(`[DEBUG] Últimos 5 caracteres: ...${CURSEFORGE_API_KEY.substring(CURSEFORGE_API_KEY.length - 5)}`);
+  
+  // Mostrar de manera segura sin revelar toda la clave
+  const safeDisplay = CURSEFORGE_API_KEY.replace(/./g, (char, index) => {
+    if (index < 5 || index >= CURSEFORGE_API_KEY.length - 5) {
+      return char;
+    }
+    return '*';
+  });
+  
+  console.log(`[DEBUG] API key (enmascarada): ${safeDisplay}`);
   
   // Verificar si la API key parece válida (formato básico)
   if (CURSEFORGE_API_KEY.length < 10) {
     console.warn('[ADVERTENCIA] La API key parece demasiado corta, podría no ser válida');
   }
+  
+  // Compartir la API key corregida con el resto de la aplicación
+  app.set('curseforgeApiKey', CURSEFORGE_API_KEY);
 }
 
 // Middleware
