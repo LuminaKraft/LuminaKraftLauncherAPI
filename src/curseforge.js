@@ -62,10 +62,13 @@ const requireApiKey = (req, res, next) => {
   
   // Debug: Mostrar información sobre la API key (primeros y últimos caracteres)
   if (apiKey) {
-    const firstChars = apiKey.substring(0, 5);
-    const lastChars = apiKey.substring(apiKey.length - 5);
-    const length = apiKey.length;
-    console.log(`[DEBUG] API key encontrada: ${firstChars}...${lastChars} (longitud: ${length})`);
+    // Normalizar la API key (reemplazar $$ por $ para mostrar el valor correcto)
+    const normalizedKey = apiKey.replace(/\$\$/g, '$');
+    
+    const firstChars = normalizedKey.substring(0, 5);
+    const lastChars = normalizedKey.substring(normalizedKey.length - 5);
+    const length = normalizedKey.length;
+    console.log(`[DEBUG] API key encontrada (normalizada): ${firstChars}...${lastChars} (longitud real: ${length})`);
   } else {
     console.error('[ERROR] CURSEFORGE_API_KEY no está configurada en las variables de entorno');
   }
@@ -77,6 +80,8 @@ const requireApiKey = (req, res, next) => {
     });
   }
   
+  // Usamos la API key tal como está (con los $$ si están presentes)
+  // ya que el servidor de CurseForge la procesará correctamente
   req.apiKey = apiKey;
   next();
 };
