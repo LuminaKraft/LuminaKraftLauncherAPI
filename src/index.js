@@ -19,16 +19,33 @@ const PORT = process.env.PORT || 9374;
 let CURSEFORGE_API_KEY = process.env.CURSEFORGE_API_KEY;
 
 // Fix para el problema de Docker Compose con los símbolos $ en la API key
-// Docker Compose elimina un $ cuando hay dos $$ consecutivos
-if (CURSEFORGE_API_KEY && CURSEFORGE_API_KEY.includes('$')) {
-  console.log('[INFO] La API key contiene símbolos $, verificando si necesita corrección...');
+// Docker Compose elimina un $ cuando hay dos $$ consecutivos en variables de entorno
+if (CURSEFORGE_API_KEY) {
+  console.log('[INFO] Verificando si la API key necesita corrección por problema de Docker Compose...');
   
-  // Si la API key debería comenzar con $2a$10$ (formato bcrypt común) pero falta algún $
+  // Solución robusta: detectar patrones comunes donde puede faltar un $
+  // 1. Caso especial para formato bcrypt que comienza con $2a$10$
   if (CURSEFORGE_API_KEY.startsWith('2a') || CURSEFORGE_API_KEY.startsWith('a$10')) {
     console.log('[INFO] Detectada API key con formato bcrypt que ha perdido símbolos $');
     // Restaurar el formato correcto
     CURSEFORGE_API_KEY = '$2a$10$' + CURSEFORGE_API_KEY.replace(/^\$?2a\$?\$?10\$?/, '');
     console.log('[INFO] API key corregida con formato bcrypt estándar');
+  }
+  
+  // 2. Solución general: buscar patrones donde probablemente falta un $ duplicado
+  // Buscar caracteres que normalmente siguen a un $ en tokens/hashes
+  const originalKey = CURSEFORGE_API_KEY;
+  const correctedKey = CURSEFORGE_API_KEY.replace(/([^$])(\d[a-zA-Z]|[a-zA-Z]\d)(?!\$)/g, '$1$$2');
+  
+  if (originalKey !== correctedKey) {
+    console.log('[INFO] Detectados posibles puntos donde falta un $ duplicado');
+    CURSEFORGE_API_KEY = correctedKey;
+  }
+  
+  // 3. Detectar si hay $ consecutivos que podrían indicar que la key ya estaba escapada para Docker
+  if (CURSEFORGE_API_KEY.includes('$$')) {
+    console.log('[INFO] Detectados $$ consecutivos en la API key, normalizando...');
+    CURSEFORGE_API_KEY = CURSEFORGE_API_KEY.replace(/\$\$/g, '$');
   }
 }
 

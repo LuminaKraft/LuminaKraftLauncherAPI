@@ -63,11 +63,26 @@ const requireApiKey = (req, res, next) => {
   
   // Fix para el problema de Docker Compose con los símbolos $ en la API key
   let correctedApiKey = apiKey;
-  if (apiKey && apiKey.includes('$')) {
-    // Si la API key debería comenzar con $2a$10$ (formato bcrypt común) pero falta algún $
+  
+  if (apiKey) {
+    // 1. Caso especial para formato bcrypt que comienza con $2a$10$
     if (apiKey.startsWith('2a') || apiKey.startsWith('a$10')) {
       correctedApiKey = '$2a$10$' + apiKey.replace(/^\$?2a\$?\$?10\$?/, '');
-      console.log('[INFO] API key corregida en middleware requireApiKey');
+      console.log('[INFO] API key corregida en middleware (formato bcrypt)');
+    }
+    
+    // 2. Solución general: buscar patrones donde probablemente falta un $ duplicado
+    const originalKey = correctedApiKey;
+    correctedApiKey = correctedApiKey.replace(/([^$])(\d[a-zA-Z]|[a-zA-Z]\d)(?!\$)/g, '$1$$2');
+    
+    if (originalKey !== correctedApiKey && originalKey !== apiKey) {
+      console.log('[INFO] Corregidos posibles puntos donde faltaba un $ duplicado');
+    }
+    
+    // 3. Detectar si hay $ consecutivos que podrían indicar que la key ya estaba escapada para Docker
+    if (correctedApiKey.includes('$$')) {
+      correctedApiKey = correctedApiKey.replace(/\$\$/g, '$');
+      console.log('[INFO] Normalizados $$ consecutivos en la API key');
     }
   }
   
