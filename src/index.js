@@ -19,7 +19,7 @@ if (!CURSEFORGE_API_KEY) {
   console.warn('CURSEFORGE_API_KEY environment variable not set. CurseForge endpoints will not work.');
 } else {
   console.log(`[DEBUG] CURSEFORGE_API_KEY encontrada en index.js. Longitud: ${CURSEFORGE_API_KEY.length} caracteres`);
-  console.log(`[DEBUG] Primeros 5 caracteres: ${CURSEFORGE_API_KEY.substring(0, 5)}...`);
+  console.log(`[DEBUG] Primeros 10 caracteres: ${CURSEFORGE_API_KEY.substring(0, 10)}...`);
   console.log(`[DEBUG] Últimos 5 caracteres: ...${CURSEFORGE_API_KEY.substring(CURSEFORGE_API_KEY.length - 5)}`);
   
   // Verificar si la API key parece válida (formato básico)
