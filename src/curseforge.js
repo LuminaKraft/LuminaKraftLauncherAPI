@@ -85,7 +85,7 @@ const requireApiKey = (req, res, next) => {
       console.log('[INFO] Normalizados $$ consecutivos en la API key');
     }
   }
-  
+
   // Debug: Mostrar información sobre la API key (enmascarada para seguridad)
   if (correctedApiKey) {
     const safeDisplay = correctedApiKey.replace(/./g, (char, index) => {

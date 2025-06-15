@@ -13,8 +13,6 @@ const curseforgeRouter = require('./curseforge');
 const app = express();
 const PORT = process.env.PORT || 9374;
 
-// Compartir la API key corregida con el resto de la aplicación
-
 // Load CurseForge API key from environment variable
 let CURSEFORGE_API_KEY = process.env.CURSEFORGE_API_KEY;
 
