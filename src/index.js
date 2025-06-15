@@ -14,61 +14,18 @@ const app = express();
 const PORT = process.env.PORT || 9374;
 
 // Load CurseForge API key from environment variable
-let CURSEFORGE_API_KEY = process.env.CURSEFORGE_API_KEY;
-
-// Fix para el problema de Docker Compose con los símbolos $ en la API key
-// Docker Compose elimina un $ cuando hay dos $$ consecutivos en variables de entorno
-if (CURSEFORGE_API_KEY) {
-  console.log('[INFO] Verificando si la API key necesita corrección por problema de Docker Compose...');
-  
-  // Solución robusta: detectar patrones comunes donde puede faltar un $
-  // 1. Caso especial para formato bcrypt que comienza con $2a$10$
-  if (CURSEFORGE_API_KEY.startsWith('2a') || CURSEFORGE_API_KEY.startsWith('a$10')) {
-    console.log('[INFO] Detectada API key con formato bcrypt que ha perdido símbolos $');
-    // Restaurar el formato correcto
-    CURSEFORGE_API_KEY = '$2a$10$' + CURSEFORGE_API_KEY.replace(/^\$?2a\$?\$?10\$?/, '');
-    console.log('[INFO] API key corregida con formato bcrypt estándar');
-  }
-  
-  // 2. Solución general: buscar patrones donde probablemente falta un $ duplicado
-  // Buscar caracteres que normalmente siguen a un $ en tokens/hashes
-  const originalKey = CURSEFORGE_API_KEY;
-  const correctedKey = CURSEFORGE_API_KEY.replace(/([^$])(\d[a-zA-Z]|[a-zA-Z]\d)(?!\$)/g, '$1$$2');
-  
-  if (originalKey !== correctedKey) {
-    console.log('[INFO] Detectados posibles puntos donde falta un $ duplicado');
-    CURSEFORGE_API_KEY = correctedKey;
-  }
-  
-  // 3. Detectar si hay $ consecutivos que podrían indicar que la key ya estaba escapada para Docker
-  if (CURSEFORGE_API_KEY.includes('$$')) {
-    console.log('[INFO] Detectados $$ consecutivos en la API key, normalizando...');
-    CURSEFORGE_API_KEY = CURSEFORGE_API_KEY.replace(/\$\$/g, '$');
-  }
-}
-
+const CURSEFORGE_API_KEY = process.env.CURSEFORGE_API_KEY;
 if (!CURSEFORGE_API_KEY) {
   console.warn('CURSEFORGE_API_KEY environment variable not set. CurseForge endpoints will not work.');
 } else {
   console.log(`[DEBUG] CURSEFORGE_API_KEY encontrada en index.js. Longitud: ${CURSEFORGE_API_KEY.length} caracteres`);
-  
-  // Mostrar de manera segura sin revelar toda la clave
-  const safeDisplay = CURSEFORGE_API_KEY.replace(/./g, (char, index) => {
-    if (index < 5 || index >= CURSEFORGE_API_KEY.length - 5) {
-      return char;
-    }
-    return '*';
-  });
-  
-  console.log(`[DEBUG] API key (enmascarada): ${safeDisplay}`);
+  console.log(`[DEBUG] Primeros 5 caracteres: ${CURSEFORGE_API_KEY.substring(0, 5)}...`);
+  console.log(`[DEBUG] Últimos 5 caracteres: ...${CURSEFORGE_API_KEY.substring(CURSEFORGE_API_KEY.length - 5)}`);
   
   // Verificar si la API key parece válida (formato básico)
   if (CURSEFORGE_API_KEY.length < 10) {
     console.warn('[ADVERTENCIA] La API key parece demasiado corta, podría no ser válida');
   }
-  
-  // Compartir la API key corregida con el resto de la aplicación
-  app.set('curseforgeApiKey', CURSEFORGE_API_KEY);
 }
 
 // Middleware

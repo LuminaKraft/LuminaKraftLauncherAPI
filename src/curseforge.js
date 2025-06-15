@@ -58,55 +58,26 @@ router.get('/mods/:modId/files/:fileId/download-url', async (req, res) => {
  * Middleware para verificar la presencia de la API key
  */
 const requireApiKey = (req, res, next) => {
-  // Usar la variable corregida desde index.js si está disponible
-  const apiKey = req.app.get('curseforgeApiKey') || process.env.CURSEFORGE_API_KEY;
+  const apiKey = process.env.CURSEFORGE_API_KEY;
   
-  // Fix para el problema de Docker Compose con los símbolos $ en la API key
-  let correctedApiKey = apiKey;
-  
+  // Debug: Mostrar información sobre la API key (primeros y últimos caracteres)
   if (apiKey) {
-    // 1. Caso especial para formato bcrypt que comienza con $2a$10$
-    if (apiKey.startsWith('2a') || apiKey.startsWith('a$10')) {
-      correctedApiKey = '$2a$10$' + apiKey.replace(/^\$?2a\$?\$?10\$?/, '');
-      console.log('[INFO] API key corregida en middleware (formato bcrypt)');
-    }
-    
-    // 2. Solución general: buscar patrones donde probablemente falta un $ duplicado
-    const originalKey = correctedApiKey;
-    correctedApiKey = correctedApiKey.replace(/([^$])(\d[a-zA-Z]|[a-zA-Z]\d)(?!\$)/g, '$1$$2');
-    
-    if (originalKey !== correctedApiKey && originalKey !== apiKey) {
-      console.log('[INFO] Corregidos posibles puntos donde faltaba un $ duplicado');
-    }
-    
-    // 3. Detectar si hay $ consecutivos que podrían indicar que la key ya estaba escapada para Docker
-    if (correctedApiKey.includes('$$')) {
-      correctedApiKey = correctedApiKey.replace(/\$\$/g, '$');
-      console.log('[INFO] Normalizados $$ consecutivos en la API key');
-    }
-  }
-
-  // Debug: Mostrar información sobre la API key (enmascarada para seguridad)
-  if (correctedApiKey) {
-    const safeDisplay = correctedApiKey.replace(/./g, (char, index) => {
-      if (index < 5 || index >= correctedApiKey.length - 5) {
-        return char;
-      }
-      return '*';
-    });
-    console.log(`[DEBUG] API key en middleware (enmascarada): ${safeDisplay} (longitud: ${correctedApiKey.length})`);
+    const firstChars = apiKey.substring(0, 5);
+    const lastChars = apiKey.substring(apiKey.length - 5);
+    const length = apiKey.length;
+    console.log(`[DEBUG] API key encontrada: ${firstChars}...${lastChars} (longitud: ${length})`);
   } else {
     console.error('[ERROR] CURSEFORGE_API_KEY no está configurada en las variables de entorno');
   }
   
-  if (!correctedApiKey) {
+  if (!apiKey) {
     return res.status(500).json({
       status: 500,
       message: 'CurseForge API key no configurada en el servidor'
     });
   }
   
-  req.apiKey = correctedApiKey;
+  req.apiKey = apiKey;
   next();
 };
 
