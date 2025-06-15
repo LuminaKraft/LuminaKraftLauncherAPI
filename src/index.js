@@ -17,18 +17,6 @@ const PORT = process.env.PORT || 9374;
 const CURSEFORGE_API_KEY = process.env.CURSEFORGE_API_KEY;
 if (!CURSEFORGE_API_KEY) {
   console.warn('CURSEFORGE_API_KEY environment variable not set. CurseForge endpoints will not work.');
-} else {
-  // Normalize the API key (replace $$ with $ for display purposes)
-  const normalizedKey = CURSEFORGE_API_KEY.replace(/\$\$/g, '$');
-  
-  console.log(`[DEBUG] CURSEFORGE_API_KEY found in index.js. Real length: ${normalizedKey.length} characters`);
-  console.log(`[DEBUG] First 5 characters (normalized): ${normalizedKey.substring(0, 5)}...`);
-  console.log(`[DEBUG] Last 5 characters (normalized): ...${normalizedKey.substring(normalizedKey.length - 5)}`);
-  
-  // Check if the API key appears valid (basic format check)
-  if (normalizedKey.length < 10) {
-    console.warn('[WARNING] The API key seems too short, it might not be valid');
-  }
 }
 
 // Middleware

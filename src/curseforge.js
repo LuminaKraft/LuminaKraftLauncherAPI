@@ -21,10 +21,7 @@ router.get('/mods/:modId/files/:fileId/download-url', async (req, res) => {
   try {
     const { modId, fileId } = req.params;
     
-    console.log(`[DEBUG] Petición recibida para obtener URL de descarga - modId: ${modId}, fileId: ${fileId}`);
-    
     const url = `${CURSEFORGE_API_BASE}/mods/${modId}/files/${fileId}/download-url`;
-    console.log(`[DEBUG] URL completa: ${url}`);
     
     const response = await axios.get(url, {
       headers: {
@@ -32,24 +29,16 @@ router.get('/mods/:modId/files/:fileId/download-url', async (req, res) => {
       }
     });
     
-    console.log(`[DEBUG] Respuesta recibida con status: ${response.status}`);
-    console.log(`[DEBUG] URL de descarga obtenida: ${response.data.data.substring(0, 50)}...`);
-    
     return res.json({
       status: response.status,
       data: response.data.data
     });
   } catch (error) {
-    console.error(`[ERROR] Error al obtener URL de descarga - modId: ${req.params.modId}, fileId: ${req.params.fileId}`);
-    console.error(`[ERROR] Mensaje de error: ${error.message}`);
-    if (error.response) {
-      console.error(`[ERROR] Status de error: ${error.response.status}`);
-      console.error(`[ERROR] Datos de error: ${JSON.stringify(error.response.data)}`);
-    }
+    console.error(`[ERROR] Error obtaining download URL - modId: ${req.params.modId}, fileId: ${req.params.fileId}`);
     return res.status(error.response?.status || 500).json({
       status: error.response?.status || 500,
       message: error.message,
-      details: error.response?.data || 'No hay detalles adicionales'
+      details: error.response?.data || 'No additional details available'
     });
   }
 });
@@ -59,19 +48,6 @@ router.get('/mods/:modId/files/:fileId/download-url', async (req, res) => {
  */
 const requireApiKey = (req, res, next) => {
   const apiKey = process.env.CURSEFORGE_API_KEY;
-  
-  // Debug: Show information about the API key (first and last characters)
-  if (apiKey) {
-    // Normalize the API key (replace $$ with $ for display purposes)
-    const normalizedKey = apiKey.replace(/\$\$/g, '$');
-    
-    const firstChars = normalizedKey.substring(0, 5);
-    const lastChars = normalizedKey.substring(normalizedKey.length - 5);
-    const length = normalizedKey.length;
-    console.log(`[DEBUG] API key found (normalized): ${firstChars}...${lastChars} (real length: ${length})`);
-  } else {
-    console.error('[ERROR] CURSEFORGE_API_KEY is not configured in environment variables');
-  }
   
   if (!apiKey) {
     return res.status(500).json({
@@ -133,48 +109,22 @@ router.get('/mods/:modId', async (req, res) => {
   try {
     const { modId } = req.params;
     
-    console.log(`[DEBUG] Petición recibida para obtener info de mod - modId: ${modId}`);
-    console.log(`[DEBUG] URL completa: ${CURSEFORGE_API_BASE}/mods/${modId}`);
-    console.log(`[DEBUG] Usando API key: ${req.apiKey ? '✓ Configurada' : '✗ No configurada'}`);
-    
-    // Verificar si la API key tiene el formato correcto (sin revelar la clave completa)
-    if (req.apiKey) {
-      if (req.apiKey.length < 10) {
-        console.warn(`[ADVERTENCIA] La API key parece demasiado corta (${req.apiKey.length} caracteres)`);
-      } else {
-        console.log(`[DEBUG] Longitud de API key: ${req.apiKey.length} caracteres`);
-      }
-    }
-    
     const response = await axios.get(`${CURSEFORGE_API_BASE}/mods/${modId}`, {
       headers: {
         'x-api-key': req.apiKey
       }
     });
     
-    console.log(`[DEBUG] Respuesta recibida con status: ${response.status}`);
-    if (response.data && response.data.data) {
-      console.log(`[DEBUG] Nombre del mod: ${response.data.data.name || 'No disponible'}`);
-      console.log(`[DEBUG] Autor del mod: ${response.data.data.authors ? response.data.data.authors[0]?.name : 'No disponible'}`);
-    }
-    
     return res.json({
       status: response.status,
       data: response.data.data
     });
   } catch (error) {
-    console.error(`[ERROR] Error al obtener información del mod - modId: ${req.params.modId}`);
-    console.error(`[ERROR] Mensaje de error: ${error.message}`);
-    if (error.response) {
-      console.error(`[ERROR] Status de error: ${error.response.status}`);
-      console.error(`[ERROR] Datos de error: ${JSON.stringify(error.response.data || {})}`);
-    } else if (error.request) {
-      console.error('[ERROR] No se recibió respuesta del servidor de CurseForge');
-    }
+    console.error(`[ERROR] Error getting mod info - modId: ${req.params.modId}`);
     return res.status(error.response?.status || 500).json({
       status: error.response?.status || 500,
       message: error.message,
-      details: error.response?.data || 'No hay detalles adicionales'
+      details: error.response?.data || 'No additional details available'
     });
   }
 });
@@ -186,18 +136,11 @@ router.get('/mods/:modId/files/:fileId', async (req, res) => {
   try {
     const { modId, fileId } = req.params;
     
-    console.log(`[DEBUG] Request received for file info - modId: ${modId}, fileId: ${fileId}`);
-    console.log(`[DEBUG] Complete URL: ${CURSEFORGE_API_BASE}/mods/${modId}/files/${fileId}`);
-    console.log(`[DEBUG] Headers: x-api-key: ${req.apiKey ? req.apiKey.substring(0, 5) + '...' : 'Not available'}`);
-    
     const response = await axios.get(`${CURSEFORGE_API_BASE}/mods/${modId}/files/${fileId}`, {
       headers: {
         'x-api-key': req.apiKey
       }
     });
-    
-    console.log(`[DEBUG] Response received with status: ${response.status}`);
-    console.log(`[DEBUG] Data received: ${JSON.stringify(response.data).substring(0, 200)}...`);
     
     return res.json({
       status: response.status,
@@ -205,11 +148,6 @@ router.get('/mods/:modId/files/:fileId', async (req, res) => {
     });
   } catch (error) {
     console.error(`[ERROR] Failed to get file info - modId: ${req.params.modId}, fileId: ${req.params.fileId}`);
-    console.error(`[ERROR] Error message: ${error.message}`);
-    if (error.response) {
-      console.error(`[ERROR] Error status: ${error.response.status}`);
-      console.error(`[ERROR] Error data: ${JSON.stringify(error.response.data)}`);
-    }
     return res.status(error.response?.status || 500).json({
       status: error.response?.status || 500,
       message: error.message,
@@ -359,4 +297,4 @@ router.get('/categories', async (req, res) => {
   }
 });
 
-module.exports = router; 
+module.exports = router;
