@@ -7,6 +7,9 @@ const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
 
+// Importar router de CurseForge
+const curseforgeRouter = require('./curseforge');
+
 const app = express();
 const PORT = process.env.PORT || 9374;
 
@@ -15,9 +18,6 @@ const CURSEFORGE_API_KEY = process.env.CURSEFORGE_API_KEY;
 if (!CURSEFORGE_API_KEY) {
   console.warn('CURSEFORGE_API_KEY environment variable not set. CurseForge endpoints will not work.');
 }
-
-// CurseForge API base URL
-const CURSEFORGE_API_BASE = 'https://api.curseforge.com/v1';
 
 // Middleware
 app.use(helmet());
@@ -212,6 +212,9 @@ app.get('/v1/modpacks/:id/features/:lang', (req, res) => {
   }
 });
 
+// Montar el router de CurseForge
+app.use('/v1/curseforge', curseforgeRouter);
+
 // API info endpoint
 app.get('/v1/info', (req, res) => {
   const packageJson = require('../package.json');
@@ -227,45 +230,13 @@ app.get('/v1/info', (req, res) => {
       'GET /v1/modpacks/:id/features/:lang - Get modpack features in specific language',
       'GET /v1/translations - Available languages',
       'GET /v1/translations/:lang - Get translations for language',
+      'GET /v1/curseforge/* - CurseForge API proxy endpoints',
       'GET /v1/info - API information'
     ]
   });
 });
 
-// CurseForge endpoints
-app.get('/curseforge/mod/:projectId/file/:fileId', async (req, res) => {
-  try {
-    if (!CURSEFORGE_API_KEY) {
-      return res.status(503).json({ error: 'CurseForge API not configured' });
-    }
-
-    const { projectId, fileId } = req.params;
-
-    // Get mod file info from CurseForge
-    const response = await axios.get(
-      `${CURSEFORGE_API_BASE}/mods/${projectId}/files/${fileId}/download-url`,
-      {
-        headers: {
-          'Accept': 'application/json',
-          'x-api-key': CURSEFORGE_API_KEY
-        }
-      }
-    );
-
-    // Get the actual file name from the URL
-    const fileName = response.data.data.split('/').pop();
-
-    res.json({
-      download_url: response.data.data,
-      file_name: fileName
-    });
-  } catch (error) {
-    console.error('CurseForge API error:', error.response?.data || error.message);
-    res.status(error.response?.status || 500).json({
-      error: 'Failed to get mod information from CurseForge'
-    });
-  }
-});
+// El endpoint antiguo de CurseForge ha sido reemplazado por el nuevo router
 
 // 404 handler
 app.use('*', (req, res) => {
@@ -280,6 +251,8 @@ app.use('*', (req, res) => {
       '/v1/modpacks/:id/features/:lang',
       '/v1/translations',
       '/v1/translations/:lang',
+      '/v1/curseforge/mods/:modId',
+      '/v1/curseforge/mods/files',
       '/v1/info'
     ]
   });
