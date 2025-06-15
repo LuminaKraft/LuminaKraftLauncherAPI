@@ -112,11 +112,13 @@ jobs:
           docker build -t luminakraft-launcher-api:latest .
           
           # Run new container with CurseForge API key
+          # Escape $ characters in the API key for Docker environment variables
+          API_KEY_ESCAPED=$(echo '${{ secrets.CURSEFORGE_API_KEY }}' | sed 's/\$/\$\$/g')
           docker run -d \
             --name luminakraft-api \
             --restart unless-stopped \
             -p 9374:9374 \
-            -e CURSEFORGE_API_KEY="${{ secrets.CURSEFORGE_API_KEY }}" \
+            -e CURSEFORGE_API_KEY="$API_KEY_ESCAPED" \
             luminakraft-launcher-api:latest
           
           # Show container status
