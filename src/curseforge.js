@@ -10,11 +10,65 @@ const CURSEFORGE_API_BASE = 'https://api.curseforge.com/v1';
 // Game ID for Minecraft
 const MINECRAFT_GAME_ID = 432;
 
+// Mostrar información de configuración al iniciar
+console.log('[INFO] Iniciando servicio de proxy para CurseForge API');
+console.log(`[INFO] URL base de la API: ${CURSEFORGE_API_BASE}`);
+console.log(`[INFO] Game ID para Minecraft: ${MINECRAFT_GAME_ID}`);
+console.log(`[INFO] API Key configurada: ${process.env.CURSEFORGE_API_KEY ? 'Sí' : 'No'}`);
+
+// Añadir endpoint para download-url que no existe actualmente
+router.get('/mods/:modId/files/:fileId/download-url', async (req, res) => {
+  try {
+    const { modId, fileId } = req.params;
+    
+    console.log(`[DEBUG] Petición recibida para obtener URL de descarga - modId: ${modId}, fileId: ${fileId}`);
+    
+    const url = `${CURSEFORGE_API_BASE}/mods/${modId}/files/${fileId}/download-url`;
+    console.log(`[DEBUG] URL completa: ${url}`);
+    
+    const response = await axios.get(url, {
+      headers: {
+        'x-api-key': req.apiKey
+      }
+    });
+    
+    console.log(`[DEBUG] Respuesta recibida con status: ${response.status}`);
+    console.log(`[DEBUG] URL de descarga obtenida: ${response.data.data.substring(0, 50)}...`);
+    
+    return res.json({
+      status: response.status,
+      data: response.data.data
+    });
+  } catch (error) {
+    console.error(`[ERROR] Error al obtener URL de descarga - modId: ${req.params.modId}, fileId: ${req.params.fileId}`);
+    console.error(`[ERROR] Mensaje de error: ${error.message}`);
+    if (error.response) {
+      console.error(`[ERROR] Status de error: ${error.response.status}`);
+      console.error(`[ERROR] Datos de error: ${JSON.stringify(error.response.data)}`);
+    }
+    return res.status(error.response?.status || 500).json({
+      status: error.response?.status || 500,
+      message: error.message,
+      details: error.response?.data || 'No hay detalles adicionales'
+    });
+  }
+});
+
 /**
  * Middleware para verificar la presencia de la API key
  */
 const requireApiKey = (req, res, next) => {
   const apiKey = process.env.CURSEFORGE_API_KEY;
+  
+  // Debug: Mostrar información sobre la API key (primeros y últimos caracteres)
+  if (apiKey) {
+    const firstChars = apiKey.substring(0, 5);
+    const lastChars = apiKey.substring(apiKey.length - 5);
+    const length = apiKey.length;
+    console.log(`[DEBUG] API key encontrada: ${firstChars}...${lastChars} (longitud: ${length})`);
+  } else {
+    console.error('[ERROR] CURSEFORGE_API_KEY no está configurada en las variables de entorno');
+  }
   
   if (!apiKey) {
     return res.status(500).json({
@@ -75,21 +129,48 @@ router.get('/mods/:modId', async (req, res) => {
   try {
     const { modId } = req.params;
     
+    console.log(`[DEBUG] Petición recibida para obtener info de mod - modId: ${modId}`);
+    console.log(`[DEBUG] URL completa: ${CURSEFORGE_API_BASE}/mods/${modId}`);
+    console.log(`[DEBUG] Usando API key: ${req.apiKey ? '✓ Configurada' : '✗ No configurada'}`);
+    
+    // Verificar si la API key tiene el formato correcto (sin revelar la clave completa)
+    if (req.apiKey) {
+      if (req.apiKey.length < 10) {
+        console.warn(`[ADVERTENCIA] La API key parece demasiado corta (${req.apiKey.length} caracteres)`);
+      } else {
+        console.log(`[DEBUG] Longitud de API key: ${req.apiKey.length} caracteres`);
+      }
+    }
+    
     const response = await axios.get(`${CURSEFORGE_API_BASE}/mods/${modId}`, {
       headers: {
         'x-api-key': req.apiKey
       }
     });
     
+    console.log(`[DEBUG] Respuesta recibida con status: ${response.status}`);
+    if (response.data && response.data.data) {
+      console.log(`[DEBUG] Nombre del mod: ${response.data.data.name || 'No disponible'}`);
+      console.log(`[DEBUG] Autor del mod: ${response.data.data.authors ? response.data.data.authors[0]?.name : 'No disponible'}`);
+    }
+    
     return res.json({
       status: response.status,
       data: response.data.data
     });
   } catch (error) {
-    console.error('Error fetching mod info:', error.message);
+    console.error(`[ERROR] Error al obtener información del mod - modId: ${req.params.modId}`);
+    console.error(`[ERROR] Mensaje de error: ${error.message}`);
+    if (error.response) {
+      console.error(`[ERROR] Status de error: ${error.response.status}`);
+      console.error(`[ERROR] Datos de error: ${JSON.stringify(error.response.data || {})}`);
+    } else if (error.request) {
+      console.error('[ERROR] No se recibió respuesta del servidor de CurseForge');
+    }
     return res.status(error.response?.status || 500).json({
       status: error.response?.status || 500,
-      message: error.message
+      message: error.message,
+      details: error.response?.data || 'No hay detalles adicionales'
     });
   }
 });
@@ -101,21 +182,34 @@ router.get('/mods/:modId/files/:fileId', async (req, res) => {
   try {
     const { modId, fileId } = req.params;
     
+    console.log(`[DEBUG] Petición recibida para obtener info de archivo - modId: ${modId}, fileId: ${fileId}`);
+    console.log(`[DEBUG] URL completa: ${CURSEFORGE_API_BASE}/mods/${modId}/files/${fileId}`);
+    console.log(`[DEBUG] Cabeceras: x-api-key: ${req.apiKey ? req.apiKey.substring(0, 5) + '...' : 'No disponible'}`);
+    
     const response = await axios.get(`${CURSEFORGE_API_BASE}/mods/${modId}/files/${fileId}`, {
       headers: {
         'x-api-key': req.apiKey
       }
     });
     
+    console.log(`[DEBUG] Respuesta recibida con status: ${response.status}`);
+    console.log(`[DEBUG] Datos recibidos: ${JSON.stringify(response.data).substring(0, 200)}...`);
+    
     return res.json({
       status: response.status,
       data: response.data.data
     });
   } catch (error) {
-    console.error('Error fetching file info:', error.message);
+    console.error(`[ERROR] Error al obtener información del archivo - modId: ${req.params.modId}, fileId: ${req.params.fileId}`);
+    console.error(`[ERROR] Mensaje de error: ${error.message}`);
+    if (error.response) {
+      console.error(`[ERROR] Status de error: ${error.response.status}`);
+      console.error(`[ERROR] Datos de error: ${JSON.stringify(error.response.data)}`);
+    }
     return res.status(error.response?.status || 500).json({
       status: error.response?.status || 500,
-      message: error.message
+      message: error.message,
+      details: error.response?.data || 'No hay detalles adicionales'
     });
   }
 });
