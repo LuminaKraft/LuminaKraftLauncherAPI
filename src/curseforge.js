@@ -10,11 +10,11 @@ const CURSEFORGE_API_BASE = 'https://api.curseforge.com/v1';
 // Game ID for Minecraft
 const MINECRAFT_GAME_ID = 432;
 
-// Mostrar información de configuración al iniciar
-console.log('[INFO] Iniciando servicio de proxy para CurseForge API');
-console.log(`[INFO] URL base de la API: ${CURSEFORGE_API_BASE}`);
-console.log(`[INFO] Game ID para Minecraft: ${MINECRAFT_GAME_ID}`);
-console.log(`[INFO] API Key configurada: ${process.env.CURSEFORGE_API_KEY ? 'Sí' : 'No'}`);
+// Display configuration information on startup
+console.log('[INFO] Starting CurseForge API proxy service');
+console.log(`[INFO] API base URL: ${CURSEFORGE_API_BASE}`);
+console.log(`[INFO] Minecraft Game ID: ${MINECRAFT_GAME_ID}`);
+console.log(`[INFO] API Key configured: ${process.env.CURSEFORGE_API_KEY ? 'Yes' : 'No'}`);
 
 // Añadir endpoint para download-url que no existe actualmente
 router.get('/mods/:modId/files/:fileId/download-url', async (req, res) => {
@@ -55,34 +55,33 @@ router.get('/mods/:modId/files/:fileId/download-url', async (req, res) => {
 });
 
 /**
- * Middleware para verificar la presencia de la API key
+ * Middleware to verify the presence of the API key
  */
 const requireApiKey = (req, res, next) => {
   const apiKey = process.env.CURSEFORGE_API_KEY;
   
-  // Debug: Mostrar información sobre la API key (primeros y últimos caracteres)
+  // Debug: Show information about the API key (first and last characters)
   if (apiKey) {
-    // Normalizar la API key (reemplazar $$ por $ para mostrar el valor correcto)
+    // Normalize the API key (replace $$ with $ for display purposes)
     const normalizedKey = apiKey.replace(/\$\$/g, '$');
     
     const firstChars = normalizedKey.substring(0, 5);
     const lastChars = normalizedKey.substring(normalizedKey.length - 5);
     const length = normalizedKey.length;
-    console.log(`[DEBUG] API key encontrada (normalizada): ${firstChars}...${lastChars} (longitud real: ${length})`);
+    console.log(`[DEBUG] API key found (normalized): ${firstChars}...${lastChars} (real length: ${length})`);
   } else {
-    console.error('[ERROR] CURSEFORGE_API_KEY no está configurada en las variables de entorno');
+    console.error('[ERROR] CURSEFORGE_API_KEY is not configured in environment variables');
   }
   
   if (!apiKey) {
     return res.status(500).json({
       status: 500,
-      message: 'CurseForge API key no configurada en el servidor'
+      message: 'CurseForge API key not configured on the server'
     });
   }
   
-  // Usamos la API key tal como está (con los $$ si están presentes)
-  // ya que el servidor de CurseForge la procesará correctamente
-  req.apiKey = apiKey;
+  // Normalize the API key by replacing $$ with $ for actual API requests
+  req.apiKey = apiKey.replace(/\$\$/g, '$');
   next();
 };
 
@@ -187,9 +186,9 @@ router.get('/mods/:modId/files/:fileId', async (req, res) => {
   try {
     const { modId, fileId } = req.params;
     
-    console.log(`[DEBUG] Petición recibida para obtener info de archivo - modId: ${modId}, fileId: ${fileId}`);
-    console.log(`[DEBUG] URL completa: ${CURSEFORGE_API_BASE}/mods/${modId}/files/${fileId}`);
-    console.log(`[DEBUG] Cabeceras: x-api-key: ${req.apiKey ? req.apiKey.substring(0, 5) + '...' : 'No disponible'}`);
+    console.log(`[DEBUG] Request received for file info - modId: ${modId}, fileId: ${fileId}`);
+    console.log(`[DEBUG] Complete URL: ${CURSEFORGE_API_BASE}/mods/${modId}/files/${fileId}`);
+    console.log(`[DEBUG] Headers: x-api-key: ${req.apiKey ? req.apiKey.substring(0, 5) + '...' : 'Not available'}`);
     
     const response = await axios.get(`${CURSEFORGE_API_BASE}/mods/${modId}/files/${fileId}`, {
       headers: {
@@ -197,24 +196,24 @@ router.get('/mods/:modId/files/:fileId', async (req, res) => {
       }
     });
     
-    console.log(`[DEBUG] Respuesta recibida con status: ${response.status}`);
-    console.log(`[DEBUG] Datos recibidos: ${JSON.stringify(response.data).substring(0, 200)}...`);
+    console.log(`[DEBUG] Response received with status: ${response.status}`);
+    console.log(`[DEBUG] Data received: ${JSON.stringify(response.data).substring(0, 200)}...`);
     
     return res.json({
       status: response.status,
       data: response.data.data
     });
   } catch (error) {
-    console.error(`[ERROR] Error al obtener información del archivo - modId: ${req.params.modId}, fileId: ${req.params.fileId}`);
-    console.error(`[ERROR] Mensaje de error: ${error.message}`);
+    console.error(`[ERROR] Failed to get file info - modId: ${req.params.modId}, fileId: ${req.params.fileId}`);
+    console.error(`[ERROR] Error message: ${error.message}`);
     if (error.response) {
-      console.error(`[ERROR] Status de error: ${error.response.status}`);
-      console.error(`[ERROR] Datos de error: ${JSON.stringify(error.response.data)}`);
+      console.error(`[ERROR] Error status: ${error.response.status}`);
+      console.error(`[ERROR] Error data: ${JSON.stringify(error.response.data)}`);
     }
     return res.status(error.response?.status || 500).json({
       status: error.response?.status || 500,
       message: error.message,
-      details: error.response?.data || 'No hay detalles adicionales'
+      details: error.response?.data || 'No additional details available'
     });
   }
 });

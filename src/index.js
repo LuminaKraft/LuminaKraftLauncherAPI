@@ -18,16 +18,16 @@ const CURSEFORGE_API_KEY = process.env.CURSEFORGE_API_KEY;
 if (!CURSEFORGE_API_KEY) {
   console.warn('CURSEFORGE_API_KEY environment variable not set. CurseForge endpoints will not work.');
 } else {
-  // Normalizar la API key (reemplazar $$ por $ para mostrar el valor correcto)
+  // Normalize the API key (replace $$ with $ for display purposes)
   const normalizedKey = CURSEFORGE_API_KEY.replace(/\$\$/g, '$');
   
-  console.log(`[DEBUG] CURSEFORGE_API_KEY encontrada en index.js. Longitud real: ${normalizedKey.length} caracteres`);
-  console.log(`[DEBUG] Primeros 10 caracteres (normalizados): ${normalizedKey.substring(0, 10)}...`);
-  console.log(`[DEBUG] Últimos 5 caracteres (normalizados): ...${normalizedKey.substring(normalizedKey.length - 5)}`);
+  console.log(`[DEBUG] CURSEFORGE_API_KEY found in index.js. Real length: ${normalizedKey.length} characters`);
+  console.log(`[DEBUG] First 5 characters (normalized): ${normalizedKey.substring(0, 5)}...`);
+  console.log(`[DEBUG] Last 5 characters (normalized): ...${normalizedKey.substring(normalizedKey.length - 5)}`);
   
-  // Verificar si la API key parece válida (formato básico)
+  // Check if the API key appears valid (basic format check)
   if (normalizedKey.length < 10) {
-    console.warn('[ADVERTENCIA] La API key parece demasiado corta, podría no ser válida');
+    console.warn('[WARNING] The API key seems too short, it might not be valid');
   }
 }
 
