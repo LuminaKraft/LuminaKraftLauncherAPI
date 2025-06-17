@@ -1,4 +1,4 @@
-# 🚀 LuminaKraft Launcher API
+# 🚀 LuminaKraft Launcher API 
 
 **API Backend oficial para el LuminaKraft Minecraft Launcher**
 
