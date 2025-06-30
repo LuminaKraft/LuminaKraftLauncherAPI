@@ -19,8 +19,6 @@ La API sirve datos estructurados para el launcher y la web, incluyendo:
 - **Servidores/Modpacks reales** con metadatos completos
 - **Sistema de traducciones** multiidioma (ES/EN)
 - **Características detalladas** de cada servidor
-- **URLs de descarga** para diferentes plataformas 
-- **Información del launcher** (versiones, changelog)
 - **Health checks** para monitoreo
 
 ### 🔗 Endpoints Principales
@@ -50,12 +48,6 @@ curl -X GET https://api.luminakraft.com/v1/launcher_data.json
 ### Ejemplo de Response:
 ```json
 {
-  "launcherVersion": "1.0.0",
-  "launcherDownloadUrls": {
-    "windows": "https://github.com/luminakraft/luminakraft-launcher/releases/latest/download/LuminaKraft-Launcher_x64_en-US.msi",
-    "macos": "https://github.com/luminakraft/luminakraft-launcher/releases/latest/download/LuminaKraft-Launcher_x64.dmg", 
-    "linux": "https://github.com/luminakraft/luminakraft-launcher/releases/latest/download/LuminaKraft-Launcher_amd64.AppImage"
-  },
   "modpacks": [
     {
       "id": "ancientkraft_rechapter",
