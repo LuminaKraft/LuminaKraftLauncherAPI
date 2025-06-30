@@ -6,12 +6,6 @@ Esta documentación describe la nueva estructura híbrida que combina lo mejor d
 
 ```json
 {
-  "launcherVersion": "string",
-  "launcherDownloadUrls": {
-    "windows": "string",
-    "macos": "string", 
-    "linux": "string"
-  },
   "modpacks": [
     // Array de objetos modpack
   ]
@@ -139,7 +133,6 @@ Cada servidor/modpack tiene características específicas que se muestran como t
 
 ### Para el Launcher
 - Mantiene toda la información técnica necesaria
-- URLs directas para descargas
 - Configuraciones JVM específicas
 - Información de versiones y modloaders
 
