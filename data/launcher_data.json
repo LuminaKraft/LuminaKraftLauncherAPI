@@ -3,7 +3,7 @@
     {
       "id": "ancientkraft_rechapter",
       "name": "AncientKraft Rechapter",
-      "version": "0.0.1",
+      "version": "0.0.2",
       "minecraftVersion": "1.20.1",
       "modloader": "forge",
       "modloaderVersion": "47.4.0",
