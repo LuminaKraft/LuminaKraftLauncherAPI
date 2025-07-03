@@ -31,7 +31,8 @@
       "changelog": "Versión inicial de AncientKraft Rechapter",
       "jvmArgsRecomendados": "-Xmx6G -Xms3G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
       "youtubeEmbed": "",
-      "featureIcons": ["fa-magic", "fa-fist-raised", "fa-map-marked-alt", "fa-users"]
+      "featureIcons": ["fa-magic", "fa-fist-raised", "fa-map-marked-alt", "fa-users"],
+      "primaryColor": "#c0a080"
     },
     {
       "id": "onepieceworlds2",
@@ -63,7 +64,8 @@
       "changelog": "Versión inicial de One Piece World S2",
       "jvmArgsRecomendados": "-Xmx5G -Xms2G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
       "youtubeEmbed": "",
-      "featureIcons": ["fa-apple-whole", "fa-fist-raised", "fa-ship", "fa-users"]
+      "featureIcons": ["fa-apple-whole", "fa-fist-raised", "fa-ship", "fa-users"],
+      "primaryColor": "#ffb400"
     },
     {
       "id": "luminakraft_world",
@@ -96,7 +98,8 @@
       "ip": "play.luminakraft.com",
       "tiktokEmbed": "7489933381099179286",
       "youtubeEmbed": "",
-      "featureIcons": ["fa-file-alt", "fa-cubes", "fa-puzzle-piece", "fa-users"]
+      "featureIcons": ["fa-file-alt", "fa-cubes", "fa-puzzle-piece", "fa-users"],
+      "primaryColor": "#4a90e2"
     },
     {
       "id": "onepieceworld",
@@ -130,7 +133,8 @@
       "jvmArgsRecomendados": "-Xmx5G -Xms2G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
       "leaderboardPath": "/data/servers/onepieceworld/leaderboard.json",
       "youtubeEmbed": "https://www.youtube.com/embed/OadtwVyeRKI",
-      "featureIcons": ["fa-apple-whole", "fa-fist-raised", "fa-ship", "fa-users"]
+      "featureIcons": ["fa-apple-whole", "fa-fist-raised", "fa-ship", "fa-users"],
+      "primaryColor": "#ffb400"
     },
     {
       "id": "ancientkraft",
@@ -172,7 +176,8 @@
       "changelog": "Versión inicial de AncientKraft",
       "jvmArgsRecomendados": "-Xmx6G -Xms3G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
       "youtubeEmbed": "https://www.youtube.com/embed/SsBTE69AE8I",
-      "featureIcons": ["fa-magic", "fa-fist-raised", "fa-map-marked-alt", "fa-users"]
+      "featureIcons": ["fa-magic", "fa-fist-raised", "fa-map-marked-alt", "fa-users"],
+      "primaryColor": "#c0a080"
     },
     {
       "id": "pt-the_full_course",
@@ -209,7 +214,8 @@
       "jvmArgsRecomendados": "-Xmx4G -Xms2G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
       "ip": "pt.luminakraft.com",
       "youtubeEmbed": "",
-      "featureIcons": ["fa-compass", "fa-users", "fa-puzzle-piece", "fa-calendar-alt"]
+      "featureIcons": ["fa-compass", "fa-users", "fa-puzzle-piece", "fa-calendar-alt"],
+      "primaryColor": "#ff5252"
     }
   ]
 } 
