@@ -28,8 +28,6 @@
           "logo": "https://luminakraft.com/imgs/favicon.webp"
         }
       ],
-      "changelog": "Versión inicial de AncientKraft Rechapter",
-      "jvmArgsRecomendados": "-Xmx6G -Xms3G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
       "youtubeEmbed": "",
       "featureIcons": ["fa-magic", "fa-fist-raised", "fa-map-marked-alt", "fa-users"],
       "primaryColor": "#c0a080"
@@ -61,8 +59,6 @@
           "logo": "https://luminakraft.com/imgs/favicon.webp"
         }
       ],
-      "changelog": "Versión inicial de One Piece World S2",
-      "jvmArgsRecomendados": "-Xmx5G -Xms2G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
       "youtubeEmbed": "",
       "featureIcons": ["fa-apple-whole", "fa-fist-raised", "fa-ship", "fa-users"],
       "primaryColor": "#ffb400"
@@ -92,8 +88,6 @@
           "logo": "https://luminakraft.com/imgs/favicon.webp"
         }
       ],
-      "changelog": "Servidor de supervivencia vanilla con plugins",
-      "jvmArgsRecomendados": "-Xmx4G -Xms2G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
       "leaderboardPath": "/data/servers/luminakraft_world/leaderboard.json",
       "ip": "play.luminakraft.com",
       "tiktokEmbed": "7489933381099179286",
@@ -129,8 +123,6 @@
           "logo": "https://luminakraft.com/imgs/favicon.webp"
         }
       ],
-      "changelog": "Versión inicial de One Piece World",
-      "jvmArgsRecomendados": "-Xmx5G -Xms2G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
       "leaderboardPath": "/data/servers/onepieceworld/leaderboard.json",
       "youtubeEmbed": "https://www.youtube.com/embed/OadtwVyeRKI",
       "featureIcons": ["fa-apple-whole", "fa-fist-raised", "fa-ship", "fa-users"],
@@ -173,8 +165,6 @@
           "logo": "https://luminakraft.com/imgs/servers/ancientkraft/colab.webp"
         }
       ],
-      "changelog": "Versión inicial de AncientKraft",
-      "jvmArgsRecomendados": "-Xmx6G -Xms3G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
       "youtubeEmbed": "https://www.youtube.com/embed/SsBTE69AE8I",
       "featureIcons": ["fa-magic", "fa-fist-raised", "fa-map-marked-alt", "fa-users"],
       "primaryColor": "#c0a080"
@@ -210,8 +200,6 @@
           "logo": "https://luminakraft.com/imgs/servers/pt-the_full_course/colab.webp"
         }
       ],
-      "changelog": "Versión inicial de PT: The Full Course",
-      "jvmArgsRecomendados": "-Xmx4G -Xms2G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
       "ip": "pt.luminakraft.com",
       "youtubeEmbed": "",
       "featureIcons": ["fa-compass", "fa-users", "fa-puzzle-piece", "fa-calendar-alt"],
