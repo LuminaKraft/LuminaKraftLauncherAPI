@@ -21,6 +21,34 @@ La API sirve datos estructurados para el launcher y la web, incluyendo:
 - **Características detalladas** de cada servidor
 - **Health checks** para monitoreo
 
+### 🔐 Autenticación y Rate Limiting
+
+La API protege todos los endpoints bajo `/v1/*` con autenticación y limitación de tasa por usuario.
+
+- Usuarios con Microsoft: el launcher envía `Authorization: Bearer <token>`, que se verifica con la API oficial de Minecraft (perfil). El usuario se identifica por UUID.
+- Usuarios offline (sin Microsoft): el launcher envía un token estable generado por cliente en `x-lk-token`. El servidor valida formato y lo usa como identificador de usuario para rate limiting.
+
+Límites por defecto: 180 peticiones por minuto por usuario (in-memory). Para producción multi-instancia se recomienda migrar a Redis.
+
+Variables de entorno relevantes:
+- `CURSEFORGE_API_KEY` (requerido) – para el proxy de CurseForge.
+- `ALLOWED_ORIGINS` (opcional) – lista separada por comas para restringir orígenes del navegador.
+
+Diagrama del flujo:
+
+```mermaid
+flowchart TD
+  A[Launcher] -->|Headers: Bearer msToken or x-lk-token| B[/v1 endpoints/]
+  B --> C[Auth middleware]
+  C -->|msToken| D[Verify with Minecraft Profile API]
+  C -->|offline| E[Validate launcher token]
+  D --> F[Per-user rate limiter]
+  E --> F
+  F --> G[Endpoint handler]
+  D -.->|401| H[Unauthorized]
+  E -.->|401| H
+```
+
 ### 🔗 Endpoints Principales
 
 | Método | Endpoint | Descripción |

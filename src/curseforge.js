@@ -71,7 +71,8 @@ const rateLimiter = (() => {
   const MAX_REQUESTS = 100; // Máximo de peticiones por ventana
   
   return (req, res, next) => {
-    const ip = req.ip;
+    // Prefer per-user rate limiting if auth middleware has attached user
+    const ip = req.user?.id || req.ip;
     const now = Date.now();
     
     // Inicializar contador para esta IP
