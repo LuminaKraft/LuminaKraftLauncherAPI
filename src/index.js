@@ -21,6 +21,7 @@ if (!CURSEFORGE_API_KEY) {
 }
 
 // Middleware
+app.set('trust proxy', 1);
 app.use(helmet());
 app.use(compression());
 app.use(morgan('combined'));
@@ -29,13 +30,29 @@ app.use(express.json());
 // Restrict CORS to the launcher origins if configured
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '').split(',').map(o => o.trim()).filter(Boolean);
 if (ALLOWED_ORIGINS.length > 0) {
-  app.use(cors({
+  const corsConfig = {
     origin: (origin, callback) => {
       if (!origin) return callback(null, true); // allow non-browser clients
       return ALLOWED_ORIGINS.includes(origin) ? callback(null, true) : callback(new Error('Not allowed by CORS'));
     },
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-lk-token', 'x-luminakraft-client'],
     credentials: true,
-  }));
+    optionsSuccessStatus: 204,
+  };
+  app.use(cors(corsConfig));
+  app.options('*', cors(corsConfig));
+} else {
+  // Default: enable permissive CORS (use env var to restrict in production)
+  const corsConfig = {
+    origin: true,
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-lk-token', 'x-luminakraft-client'],
+    credentials: true,
+    optionsSuccessStatus: 204,
+  };
+  app.use(cors(corsConfig));
+  app.options('*', cors(corsConfig));
 }
 
 // Health check endpoint
@@ -48,8 +65,27 @@ app.get('/health', (req, res) => {
 });
 
 // Protect all /v1 endpoints with auth & per-user rate limiting
-const v1RateLimiter = createPerUserRateLimiter({ windowMs: 60_000, max: 180 });
+const RATE_LIMIT_WINDOW_MS = parseInt(process.env.RATE_LIMIT_WINDOW_MS || '', 10) || 60_000;
+const RATE_LIMIT_MAX = parseInt(process.env.RATE_LIMIT_MAX || '', 10) || 180;
+const v1RateLimiter = createPerUserRateLimiter({ windowMs: RATE_LIMIT_WINDOW_MS, max: RATE_LIMIT_MAX });
 app.use('/v1', authenticateUser, v1RateLimiter);
+
+// Helpers: conditional GET with simple ETag
+function setConditionalGet(req, res, filePath) {
+  try {
+    const stats = fs.statSync(filePath);
+    const etag = `W/"${stats.mtimeMs}-${stats.size}"`;
+    const ifNoneMatch = req.headers['if-none-match'];
+    const ifModifiedSince = req.headers['if-modified-since'];
+    res.setHeader('ETag', etag);
+    res.setHeader('Last-Modified', stats.mtime.toUTCString());
+    if ((ifNoneMatch && ifNoneMatch === etag) || (ifModifiedSince && new Date(ifModifiedSince) >= stats.mtime)) {
+      res.status(304).end();
+      return true;
+    }
+  } catch (_) { /* ignore */ }
+  return false;
+}
 
 // Main launcher data endpoint
 app.get('/v1/launcher_data.json', (req, res) => {
@@ -63,6 +99,7 @@ app.get('/v1/launcher_data.json', (req, res) => {
       });
     }
 
+    if (setConditionalGet(req, res, dataPath)) return;
     const launcherData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
     
     res.setHeader('Content-Type', 'application/json');
@@ -81,6 +118,8 @@ app.get('/v1/launcher_data.json', (req, res) => {
 app.get('/v1/modpacks/:id', (req, res) => {
   try {
     const dataPath = path.join(__dirname, '../data/launcher_data.json');
+    // Conditional GET uses the same file stats
+    if (setConditionalGet(req, res, dataPath)) return;
     const launcherData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
     const modpack = launcherData.modpacks.find(mp => mp.id === req.params.id);
     
@@ -105,6 +144,7 @@ app.get('/v1/modpacks/:id', (req, res) => {
 app.get('/v1/modpacks', (req, res) => {
   try {
     const dataPath = path.join(__dirname, '../data/launcher_data.json');
+    if (setConditionalGet(req, res, dataPath)) return;
     const launcherData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
     
     res.json({
@@ -148,6 +188,7 @@ app.get('/v1/translations/:lang', (req, res) => {
       });
     }
     
+    if (setConditionalGet(req, res, translationPath)) return;
     const translations = JSON.parse(fs.readFileSync(translationPath, 'utf8'));
     res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
     res.json(translations);
