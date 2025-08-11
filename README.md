@@ -73,6 +73,15 @@ flowchart TD
 curl -X GET https://api.luminakraft.com/v1/launcher_data.json
 ```
 
+#### Headers requeridos por el launcher
+
+- Autenticación (uno de):
+  - `Authorization: Bearer <msToken>` (usuarios Microsoft)
+  - `x-lk-token: <clientToken>` (usuarios offline, token generado por el launcher)
+- Identificador opcional del cliente: `x-luminakraft-client: luminakraft-launcher`
+
+Los límites de tasa se aplican por usuario (UUID de Microsoft o `clientToken`).
+
 ### Ejemplo de Response:
 ```json
 {
