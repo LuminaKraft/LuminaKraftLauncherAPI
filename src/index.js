@@ -9,6 +9,7 @@ const axios = require('axios');
 
 // Importar router de CurseForge
 const curseforgeRouter = require('./curseforge');
+const { authenticateUser, createPerUserRateLimiter } = require('./middleware/auth');
 
 const app = express();
 const PORT = process.env.PORT || 9374;
@@ -21,10 +22,21 @@ if (!CURSEFORGE_API_KEY) {
 
 // Middleware
 app.use(helmet());
-app.use(cors());
 app.use(compression());
 app.use(morgan('combined'));
 app.use(express.json());
+
+// Restrict CORS to the launcher origins if configured
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '').split(',').map(o => o.trim()).filter(Boolean);
+if (ALLOWED_ORIGINS.length > 0) {
+  app.use(cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true); // allow non-browser clients
+      return ALLOWED_ORIGINS.includes(origin) ? callback(null, true) : callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+  }));
+}
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -34,6 +46,10 @@ app.get('/health', (req, res) => {
     version: require('../package.json').version
   });
 });
+
+// Protect all /v1 endpoints with auth & per-user rate limiting
+const v1RateLimiter = createPerUserRateLimiter({ windowMs: 60_000, max: 180 });
+app.use('/v1', authenticateUser, v1RateLimiter);
 
 // Main launcher data endpoint
 app.get('/v1/launcher_data.json', (req, res) => {
@@ -212,7 +228,7 @@ app.get('/v1/modpacks/:id/features/:lang', (req, res) => {
   }
 });
 
-// Montar el router de CurseForge
+// Montar el router de CurseForge (inherits /v1 middlewares)
 app.use('/v1/curseforge', curseforgeRouter);
 
 // API info endpoint
