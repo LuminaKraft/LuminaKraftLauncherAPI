@@ -36,7 +36,17 @@ if (ALLOWED_ORIGINS.length > 0) {
       return ALLOWED_ORIGINS.includes(origin) ? callback(null, true) : callback(new Error('Not allowed by CORS'));
     },
     methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-lk-token', 'x-luminakraft-client'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'x-lk-token',
+      'x-luminakraft-client',
+      'Cache-Control',
+      'Accept',
+      'If-None-Match',
+      'If-Modified-Since',
+      'X-Requested-With'
+    ],
     credentials: true,
     optionsSuccessStatus: 204,
   };
@@ -47,7 +57,17 @@ if (ALLOWED_ORIGINS.length > 0) {
   const corsConfig = {
     origin: true,
     methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-lk-token', 'x-luminakraft-client'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'x-lk-token',
+      'x-luminakraft-client',
+      'Cache-Control',
+      'Accept',
+      'If-None-Match',
+      'If-Modified-Since',
+      'X-Requested-With'
+    ],
     credentials: true,
     optionsSuccessStatus: 204,
   };
