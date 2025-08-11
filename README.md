@@ -82,6 +82,26 @@ curl -X GET https://api.luminakraft.com/v1/launcher_data.json
 
 Los límites de tasa se aplican por usuario (UUID de Microsoft o `clientToken`).
 
+### ⚙️ CORS y Configuración en Producción
+
+- Por defecto, CORS está habilitado (útil para desarrollo con Tauri `http://localhost:1420`).
+- En producción, define orígenes explícitos con `ALLOWED_ORIGINS` (separados por comas). Ejemplo:
+
+```
+ALLOWED_ORIGINS=app://-,tauri://localhost,http://localhost:1420
+RATE_LIMIT_WINDOW_MS=60000
+RATE_LIMIT_MAX=180
+```
+
+- Preflight (OPTIONS) permitido y gestionado. Los headers permitidos incluyen:
+  - `Content-Type`, `Authorization`, `x-lk-token`, `x-luminakraft-client`
+  - `Cache-Control`, `Accept`, `If-None-Match`, `If-Modified-Since`, `X-Requested-With`
+
+### 🧠 Cache HTTP y Condicional
+
+- Las respuestas basadas en archivos (`launcher_data.json`, traducciones, listados) incluyen `ETag` y `Last-Modified`.
+- Soporte para `If-None-Match` y `If-Modified-Since` → respuestas `304 Not Modified` cuando corresponde.
+
 ### Ejemplo de Response:
 ```json
 {
