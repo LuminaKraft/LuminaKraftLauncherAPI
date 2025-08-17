@@ -25,7 +25,7 @@ router.get('/mods/:modId/files/:fileId/download-url', async (req, res) => {
     
     const response = await axios.get(url, {
       headers: {
-        'x-api-key': req.apiKey
+        'X-API-Key': req.apiKey
       }
     });
     
@@ -34,7 +34,17 @@ router.get('/mods/:modId/files/:fileId/download-url', async (req, res) => {
       data: response.data.data
     });
   } catch (error) {
-    console.error(`[ERROR] Error obtaining download URL - modId: ${req.params.modId}, fileId: ${req.params.fileId}`);
+    console.error(`[ERROR] Error obtaining download URL - modId: ${req.params.modId}, fileId: ${req.params.fileId}`, error.message);
+    
+    if (error.response?.status === 401) {
+      console.error('[ERROR] CurseForge API returned 401 Unauthorized - check API key');
+      return res.status(401).json({
+        status: 401,
+        message: 'Unauthorized: Invalid API key or API key missing',
+        details: 'The CurseForge API rejected the request due to authentication issues'
+      });
+    }
+    
     return res.status(error.response?.status || 500).json({
       status: error.response?.status || 500,
       message: error.message,
@@ -50,14 +60,25 @@ const requireApiKey = (req, res, next) => {
   const apiKey = process.env.CURSEFORGE_API_KEY;
   
   if (!apiKey) {
+    console.error('[ERROR] CURSEFORGE_API_KEY environment variable not configured');
     return res.status(500).json({
       status: 500,
       message: 'CurseForge API key not configured on the server'
     });
   }
   
+  // Validate API key format (CurseForge API keys are typically long strings)
+  const trimmedKey = apiKey.trim();
+  if (trimmedKey.length < 20) {
+    console.error('[ERROR] CURSEFORGE_API_KEY appears to be invalid (too short)');
+    return res.status(500).json({
+      status: 500,
+      message: 'CurseForge API key appears to be invalid'
+    });
+  }
+  
   // Normalize the API key by replacing $$ with $ for actual API requests
-  req.apiKey = apiKey.replace(/\$\$/g, '$');
+  req.apiKey = trimmedKey.replace(/\$\$/g, '$');
   next();
 };
 
@@ -112,7 +133,7 @@ router.get('/mods/:modId', async (req, res) => {
     
     const response = await axios.get(`${CURSEFORGE_API_BASE}/mods/${modId}`, {
       headers: {
-        'x-api-key': req.apiKey
+        'X-API-Key': req.apiKey
       }
     });
     
@@ -121,7 +142,17 @@ router.get('/mods/:modId', async (req, res) => {
       data: response.data.data
     });
   } catch (error) {
-    console.error(`[ERROR] Error getting mod info - modId: ${req.params.modId}`);
+    console.error(`[ERROR] Error getting mod info - modId: ${req.params.modId}`, error.message);
+    
+    if (error.response?.status === 401) {
+      console.error('[ERROR] CurseForge API returned 401 Unauthorized - check API key');
+      return res.status(401).json({
+        status: 401,
+        message: 'Unauthorized: Invalid API key or API key missing',
+        details: 'The CurseForge API rejected the request due to authentication issues'
+      });
+    }
+    
     return res.status(error.response?.status || 500).json({
       status: error.response?.status || 500,
       message: error.message,
@@ -139,7 +170,7 @@ router.get('/mods/:modId/files/:fileId', async (req, res) => {
     
     const response = await axios.get(`${CURSEFORGE_API_BASE}/mods/${modId}/files/${fileId}`, {
       headers: {
-        'x-api-key': req.apiKey
+        'X-API-Key': req.apiKey
       }
     });
     
@@ -148,7 +179,17 @@ router.get('/mods/:modId/files/:fileId', async (req, res) => {
       data: response.data.data
     });
   } catch (error) {
-    console.error(`[ERROR] Failed to get file info - modId: ${req.params.modId}, fileId: ${req.params.fileId}`);
+    console.error(`[ERROR] Failed to get file info - modId: ${req.params.modId}, fileId: ${req.params.fileId}`, error.message);
+    
+    if (error.response?.status === 401) {
+      console.error('[ERROR] CurseForge API returned 401 Unauthorized - check API key');
+      return res.status(401).json({
+        status: 401,
+        message: 'Unauthorized: Invalid API key or API key missing',
+        details: 'The CurseForge API rejected the request due to authentication issues'
+      });
+    }
+    
     return res.status(error.response?.status || 500).json({
       status: error.response?.status || 500,
       message: error.message,
@@ -175,7 +216,7 @@ router.post('/mods', async (req, res) => {
       modIds
     }, {
       headers: {
-        'x-api-key': req.apiKey,
+        'X-API-Key': req.apiKey,
         'Content-Type': 'application/json'
       }
     });
@@ -186,6 +227,16 @@ router.post('/mods', async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching mods info:', error.message);
+    
+    if (error.response?.status === 401) {
+      console.error('[ERROR] CurseForge API returned 401 Unauthorized - check API key');
+      return res.status(401).json({
+        status: 401,
+        message: 'Unauthorized: Invalid API key or API key missing',
+        details: 'The CurseForge API rejected the request due to authentication issues'
+      });
+    }
+    
     return res.status(error.response?.status || 500).json({
       status: error.response?.status || 500,
       message: error.message
@@ -211,7 +262,7 @@ router.post('/mods/files', async (req, res) => {
       fileIds
     }, {
       headers: {
-        'x-api-key': req.apiKey,
+        'X-API-Key': req.apiKey,
         'Content-Type': 'application/json'
       }
     });
@@ -222,6 +273,16 @@ router.post('/mods/files', async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching files info:', error.message);
+    
+    if (error.response?.status === 401) {
+      console.error('[ERROR] CurseForge API returned 401 Unauthorized - check API key');
+      return res.status(401).json({
+        status: 401,
+        message: 'Unauthorized: Invalid API key or API key missing',
+        details: 'The CurseForge API rejected the request due to authentication issues'
+      });
+    }
+    
     return res.status(error.response?.status || 500).json({
       status: error.response?.status || 500,
       message: error.message
@@ -253,7 +314,7 @@ router.get('/search', async (req, res) => {
     
     const response = await axios.get(`${CURSEFORGE_API_BASE}/mods/search`, {
       headers: {
-        'x-api-key': req.apiKey
+        'X-API-Key': req.apiKey
       },
       params
     });
@@ -264,9 +325,65 @@ router.get('/search', async (req, res) => {
     });
   } catch (error) {
     console.error('Error searching mods:', error.message);
+    
+    if (error.response?.status === 401) {
+      console.error('[ERROR] CurseForge API returned 401 Unauthorized - check API key');
+      return res.status(401).json({
+        status: 401,
+        message: 'Unauthorized: Invalid API key or API key missing',
+        details: 'The CurseForge API rejected the request due to authentication issues'
+      });
+    }
+    
     return res.status(error.response?.status || 500).json({
       status: error.response?.status || 500,
       message: error.message
+    });
+  }
+});
+
+/**
+ * GET - Test CurseForge API connection
+ */
+router.get('/test', async (req, res) => {
+  try {
+    console.log('[INFO] Testing CurseForge API connection...');
+    
+    // Try a simple categories call as a test
+    const response = await axios.get(`${CURSEFORGE_API_BASE}/categories`, {
+      headers: {
+        'X-API-Key': req.apiKey
+      },
+      params: {
+        gameId: MINECRAFT_GAME_ID
+      },
+      timeout: 10000
+    });
+    
+    return res.json({
+      status: 'success',
+      message: 'CurseForge API connection successful',
+      apiStatus: response.status,
+      categoriesCount: response.data.data?.length || 0
+    });
+  } catch (error) {
+    console.error('[ERROR] CurseForge API test failed:', error.message);
+    
+    if (error.response?.status === 401) {
+      console.error('[ERROR] Authentication failed - check API key configuration');
+      return res.status(401).json({
+        status: 'error',
+        message: 'Authentication failed: Invalid or missing API key',
+        details: 'The CurseForge API rejected the authentication. Verify the CURSEFORGE_API_KEY secret is correctly set.',
+        httpStatus: 401
+      });
+    }
+    
+    return res.status(error.response?.status || 500).json({
+      status: 'error',
+      message: 'CurseForge API test failed',
+      details: error.message,
+      httpStatus: error.response?.status || 500
     });
   }
 });
@@ -278,7 +395,7 @@ router.get('/categories', async (req, res) => {
   try {
     const response = await axios.get(`${CURSEFORGE_API_BASE}/categories`, {
       headers: {
-        'x-api-key': req.apiKey
+        'X-API-Key': req.apiKey
       },
       params: {
         gameId: MINECRAFT_GAME_ID
@@ -291,6 +408,16 @@ router.get('/categories', async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching categories:', error.message);
+    
+    if (error.response?.status === 401) {
+      console.error('[ERROR] CurseForge API returned 401 Unauthorized - check API key');
+      return res.status(401).json({
+        status: 401,
+        message: 'Unauthorized: Invalid API key or API key missing',
+        details: 'The CurseForge API rejected the request due to authentication issues'
+      });
+    }
+    
     return res.status(error.response?.status || 500).json({
       status: error.response?.status || 500,
       message: error.message

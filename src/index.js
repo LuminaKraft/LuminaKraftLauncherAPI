@@ -307,6 +307,7 @@ app.get('/v1/info', (req, res) => {
       'GET /v1/modpacks/:id/features/:lang - Get modpack features in specific language',
       'GET /v1/translations - Available languages',
       'GET /v1/translations/:lang - Get translations for language',
+      'GET /v1/curseforge/test - Test CurseForge API connection',
       'GET /v1/curseforge/* - CurseForge API proxy endpoints',
       'GET /v1/info - API information'
     ]
@@ -328,6 +329,7 @@ app.use('*', (req, res) => {
       '/v1/modpacks/:id/features/:lang',
       '/v1/translations',
       '/v1/translations/:lang',
+      '/v1/curseforge/test',
       '/v1/curseforge/mods/:modId',
       '/v1/curseforge/mods/files',
       '/v1/info'
