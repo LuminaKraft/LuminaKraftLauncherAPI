@@ -7,10 +7,8 @@ import os
 from typing import Optional
 
 from app.routers import modpacks, translations, curseforge
-from app.config import settings
 
-# Debug: print ALLOWED_ORIGINS at startup
-print(f"[DEBUG] ALLOWED_ORIGINS from settings: {settings.ALLOWED_ORIGINS}")
+from app.config import settings
 
 # Create FastAPI app
 app = FastAPI(
@@ -39,9 +37,6 @@ app.add_middleware(
 @app.middleware("http")
 async def custom_cors_filter(request, call_next):
     origin = request.headers.get("origin")
-    # Debug log for CORS
-    print(f"[CORS] Origin: {origin} | Allowed: {allowed_origins} | Method: {request.method}")
-
     # Always respond to OPTIONS with 200 and CORS headers
     if request.method == "OPTIONS":
         from starlette.responses import Response
@@ -66,7 +61,6 @@ async def custom_cors_filter(request, call_next):
             response.headers["Access-Control-Allow-Origin"] = "*"
         return response
     else:
-        print(f"[CORS] Blocked request from origin: {origin}")
         return JSONResponse({"detail": "CORS origin not allowed"}, status_code=400)
 
 # Include routers
