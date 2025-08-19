@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   luminakraft-api:
     build: .
@@ -7,16 +9,19 @@ services:
     volumes:
       # Mount data directory for easy editing during development
       - ./data:/app/data:ro
+      - ./app:/app/app:ro  # Development volume mount
     environment:
-      - NODE_ENV=production
-      - CURSEFORGE_API_KEY=${CURSEFORGE_API_KEY}
+      - ENVIRONMENT=development
+      - PORT=9374
+      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173,http://127.0.0.1:3000,http://127.0.0.1:5173
+      - CURSEFORGE_API_KEY=${CURSEFORGE_API_KEY:-}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9374/health"]
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 30s
+      start_period: 40s
 
   # Optional: nginx reverse proxy for production-like setup
   nginx:
@@ -30,4 +35,4 @@ services:
       - luminakraft-api
     restart: unless-stopped
     profiles:
-      - "with-proxy" 
+      - "with-proxy"

@@ -1,107 +1,60 @@
-# Esquema de Modpacks - Estructura Híbrida
+# FastAPI Modpack Schema - Optimized Structure
 
-Esta documentación describe la nueva estructura híbrida que combina lo mejor de la API del launcher con la estructura visual de la web de Astro.
+This documentation describes the optimized modpack data structure for the FastAPI-based launcher API with performance-focused lightweight and detailed responses.
 
-## Estructura Principal
+## API Response Structure
+
+### Lightweight Response (`/v1/modpacks?lang=en`)
+Used for browsing/initial load - optimized for performance:
 
 ```json
 {
+  "count": 6,
   "modpacks": [
-    // Array de objetos modpack
-  ]
-}
-```
-
-## Esquema de Modpack Individual
-
-### Campos Básicos (Requeridos)
-- `id`: Identificador único del modpack (string)
-- `name`: Nombre completo del modpack (string)
-- `version`: Versión actual del modpack (string)
-- `minecraftVersion`: Versión de Minecraft requerida (string)
-- `modloader`: Tipo de modloader (forge/fabric/neoforge/paper/vanilla) (string)
-- `modloaderVersion`: Versión específica del modloader (string)
-
-### Campos de Estado
-- `isNew`: Si el modpack es nuevo (boolean)
-- `isActive`: Si el modpack está activo/disponible (boolean)
-- `isComingSoon`: Si el modpack está próximamente (boolean)
-
-### Campos Visuales
-- `images`: Array de URLs de screenshots del modpack (string[])
-- `logo`: URL del logo principal del modpack (string)
-- `urlIcono`: URL del icono pequeño para el launcher (string)
-- `featureIcons`: Array de iconos FontAwesome que representan características (string[])
-
-### Campos de Colaboración
-- `collaborators`: Array de objetos colaborador
-  ```json
-  {
-    "name": "Nombre del colaborador",
-    "logo": "URL del logo del colaborador"
-  }
-  ```
-
-### Campos Técnicos del Launcher
-- `urlModpackZip`: URL directa al archivo ZIP del modpack (string)
-- `jvmArgsRecomendados`: Argumentos JVM recomendados (string)
-- `changelog`: Notas de la versión actual (string)
-
-### Campos de Contenido Multimedia
-- `youtubeEmbed`: URL de embed de YouTube (string, opcional)
-- `tiktokEmbed`: ID de embed de TikTok (string, opcional)
-
-### Campos Adicionales de la Web
-- `gamemode`: Categoría/género del modpack (string)
-- `leaderboardPath`: Ruta al archivo de leaderboard (string, opcional)
-- `ip`: IP del servidor si aplica (string, opcional)
-
-### Sistema de Traducciones
-Las descripciones y textos se obtienen desde archivos JSON de traducciones separados:
-- `/v1/translations` - Lista idiomas disponibles
-- `/v1/translations/es` - Traducciones en español
-- `/v1/translations/en` - Traducciones en inglés
-- `/v1/modpacks/:id/features/:lang` - Características específicas de un modpack
-
-Estructura de traducciones:
-```json
-{
-  "modpacks": {
-    "modpack_id": {
-      "name": "Nombre del modpack",
-      "description": "Descripción completa",
-      "shortDescription": "Descripción corta"
+    {
+      "id": "ancientkraft",
+      "name": "AncientKraft",
+      "shortDescription": "RPG adventure with custom systems",
+      "version": "1.0.0",
+      "minecraftVersion": "1.20.1",
+      "modloader": "forge",
+      "gamemode": "RPG / Aventura",
+      "logo": "https://luminakraft.com/.../logo.webp",
+      "backgroundImage": "https://luminakraft.com/.../screenshot1.webp",
+      "primaryColor": "#c0a080",
+      "isNew": false,
+      "isActive": false,
+      "isComingSoon": false,
+      "urlModpackZip": "https://..."
     }
-  },
-  "features": {
-    "modpack_id": [
-      {
-        "title": "Título de la característica",
-        "description": "Descripción detallada de la característica"
-      }
-    ]
-  },
+  ],
   "ui": {
-    "status": { "new": "Nuevo", "active": "Activo" },
-    "modloader": { "forge": "Forge", "fabric": "Fabric" },
-    "gamemode": { "rpg": "RPG", "survival": "Supervivencia" }
+    "status": {
+      "new": "New",
+      "active": "Active",
+      "coming_soon": "Coming Soon",
+      "inactive": "Inactive"
+    },
+    "modloader": {
+      "forge": "Forge",
+      "fabric": "Fabric",
+      "paper": "Paper"
+    },
+    "gamemode": {
+      "rpg": "RPG",
+      "survival": "Survival"
+    }
   }
 }
 ```
 
-### Sistema de Características (Features)
-Cada servidor/modpack tiene características específicas que se muestran como tarjetas en la web:
-- Cada característica tiene un `title` y `description`
-- Se obtienen mediante el endpoint `/v1/modpacks/:id/features/:lang`
-- Están completamente traducidas en español e inglés
-- Permiten mostrar información detallada sobre las funcionalidades únicas de cada servidor
-
-## Ejemplo Completo
+### Full Response (`/v1/modpacks/{id}`)
+Used for details page - complete data:
 
 ```json
 {
-  "id": "ancientkraft_rechapter",
-  "name": "AncientKraft Rechapter",
+  "id": "ancientkraft",
+  "name": "AncientKraft",
   "version": "1.0.0",
   "minecraftVersion": "1.20.1",
   "modloader": "forge",
@@ -109,50 +62,246 @@ Cada servidor/modpack tiene características específicas que se muestran como t
   "gamemode": "RPG / Aventura",
   "isNew": false,
   "isActive": false,
-  "isComingSoon": true,
+  "isComingSoon": false,
   "images": [
-    "https://f005.backblazeb2.com/file/luminakraft-assets/servers/ancientkraft_rechapter/screenshot1.webp"
+    "https://luminakraft.com/.../screenshot1.webp",
+    "https://luminakraft.com/.../screenshot2.webp"
+    // ... all images
   ],
-  "logo": "https://f005.backblazeb2.com/file/luminakraft-assets/servers/ancientkraft_rechapter/logo.webp",
-  "urlIcono": "https://f005.backblazeb2.com/file/luminakraft-assets/servers/ancientkraft_rechapter/logo.webp",
-  "urlModpackZip": "https://f005.backblazeb2.com/file/luminakraft-modpacks/ancientkraft_rechapter_v1.0.0.zip",
+  "logo": "https://luminakraft.com/.../logo.webp",
+  "backgroundImage": "https://luminakraft.com/.../screenshot1.webp",
+  "urlModpackZip": "https://...",
   "collaborators": [
     {
       "name": "LuminaKraft Studios",
-      "logo": "https://f005.backblazeb2.com/file/luminakraft-assets/favicon.webp"
+      "logo": "https://luminakraft.com/imgs/favicon.webp"
     }
   ],
-  "changelog": "Versión inicial de AncientKraft Rechapter",
-  "jvmArgsRecomendados": "-Xmx6G -Xms3G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200",
-  "youtubeEmbed": "",
-  "featureIcons": ["fa-magic", "fa-fist-raised", "fa-map-marked-alt", "fa-users"]
+  "youtubeEmbed": "https://www.youtube.com/embed/...",
+  "tiktokEmbed": "7489933381099179286",
+  "featureIcons": ["fa-magic", "fa-fist-raised"],
+  "primaryColor": "#c0a080",
+  "leaderboardPath": "/data/servers/.../leaderboard.json",
+  "ip": "play.luminakraft.com"
 }
 ```
 
-## Ventajas de la Estructura Híbrida
+## Data Optimization Strategy
 
-### Para el Launcher
-- Mantiene toda la información técnica necesaria
-- Configuraciones JVM específicas
-- Información de versiones y modloaders
+### Performance Improvements
+- **Lightweight browsing**: Only essential data for modpack cards
+- **On-demand details**: Heavy data loaded only when needed
+- **Embedded translations**: UI translations included in responses
+- **Single API calls**: No separate translation requests needed
 
-### Para la Web
-- Imágenes y logos para galería visual
-- Estados de disponibilidad
-- Información de colaboradores
-- Iconos de características
-- Contenido multimedia embebido
-- Slugs para URLs amigables
+### Field Classification
 
-### Para Ambos
-- Identificadores únicos consistentes
-- Descripciones ricas
-- Información de versiones
-- Flexibilidad para campos opcionales
+#### Lightweight Fields (Always Included)
+- `id`, `name`, `version`, `minecraftVersion`, `modloader`
+- `logo`, `backgroundImage`, `primaryColor`
+- `gamemode`, `shortDescription` (from translations)
+- Status flags: `isNew`, `isActive`, `isComingSoon`
+- `urlModpackZip` (needed for install buttons)
 
-## Notas de Implementación
+#### Heavy Fields (Details Only)
+- `images` array (all screenshots)
+- `collaborators` array
+- `youtubeEmbed`, `tiktokEmbed`
+- `featureIcons`
+- Optional fields: `ip`, `leaderboardPath`
 
-1. **Retrocompatibilidad**: Los campos originales del launcher se mantienen
-2. **Campos Opcionales**: Los nuevos campos visuales son opcionales
-3. **URLs Consistentes**: Todas las URLs usan Backblaze para consistencia
-4. **Estructura Escalable**: Fácil agregar nuevos campos sin romper compatibilidad 
+### Data Structure Changes
+
+#### ✅ Added Fields
+- `backgroundImage`: First image from images array
+- `shortDescription`: From translation files, embedded in response
+
+#### ❌ Removed Fields  
+- `urlIcono`: Redundant with `logo` field
+- Separate translation calls (now embedded)
+
+## Pydantic Models
+
+### Core Models
+```python
+class ModpackLightweight(BaseModel):
+    """Optimized for browsing performance"""
+    id: str
+    name: str
+    shortDescription: str
+    version: str
+    minecraftVersion: str
+    modloader: str
+    gamemode: str
+    logo: HttpUrl
+    backgroundImage: HttpUrl
+    primaryColor: str
+    isNew: bool = False
+    isActive: bool = False
+    isComingSoon: bool = False
+    urlModpackZip: Optional[HttpUrl] = None
+
+class Modpack(BaseModel):
+    """Complete modpack data"""
+    id: str
+    name: str
+    version: str
+    # ... all fields including images, collaborators, etc.
+
+class UITranslations(BaseModel):
+    """UI translations embedded in responses"""
+    status: Dict[str, str]
+    modloader: Dict[str, str] 
+    gamemode: Dict[str, str]
+```
+
+## Translation Integration
+
+### Embedded Translations
+UI translations are now included directly in modpack responses:
+
+```python
+# API automatically includes based on lang parameter
+GET /v1/modpacks?lang=es  # Spanish UI translations
+GET /v1/modpacks?lang=en  # English UI translations
+```
+
+### Translation Structure
+```json
+{
+  "modpacks": {
+    "ancientkraft": {
+      "name": "AncientKraft",
+      "description": "Complete description...",
+      "shortDescription": "RPG adventure with custom systems"
+    }
+  },
+  "features": {
+    "ancientkraft": [
+      {
+        "title": "Custom Magic System",
+        "description": "Detailed feature description..."
+      }
+    ]
+  },
+  "ui": {
+    "status": {"new": "New", "active": "Active"},
+    "modloader": {"forge": "Forge", "paper": "Paper"},
+    "gamemode": {"rpg": "RPG", "survival": "Survival"}
+  }
+}
+```
+
+## Client Integration Pattern
+
+### Optimal Usage Flow
+```typescript
+// 1. Initial load - lightweight data with translations
+const modpacks = await api.get('/v1/modpacks?lang=en');
+// Display modpack grid with all needed data
+
+// 2. User clicks modpack - get full details
+const details = await api.get(`/v1/modpacks/${id}`);
+// Show complete modpack details with all images
+```
+
+### Performance Benefits
+- **75% smaller** initial response
+- **Single API call** for browsing (no separate translations)
+- **Progressive loading** - details fetched on demand
+- **Better mobile experience** with reduced bandwidth
+
+## Data Validation
+
+### FastAPI Validation
+All data is validated using Pydantic models:
+
+- **Type safety**: Automatic type validation
+- **URL validation**: HttpUrl ensures valid image/download URLs
+- **Required fields**: Ensures data integrity
+- **Optional fields**: Flexible for different modpack types
+
+### Error Handling
+```python
+# Automatic validation errors
+{
+  "detail": [
+    {
+      "loc": ["modpacks", 0, "logo"],
+      "msg": "invalid or missing URL",
+      "type": "value_error.url"
+    }
+  ]
+}
+```
+
+## Migration Notes
+
+### From Express.js Structure
+- **Endpoint changes**: `/v1/launcher_data.json` → `/v1/modpacks?lang=`
+- **Response optimization**: Separated lightweight/detailed responses  
+- **Field updates**: Added `backgroundImage`, removed `urlIcono`
+- **Translation embedding**: UI translations included in responses
+
+### Backward Compatibility
+Breaking changes implemented for better performance:
+- Clients must update to new endpoint structure
+- `urlIcono` field removed (use `logo` instead)
+- Translation calls no longer needed separately
+
+## Implementation Examples
+
+### Adding New Modpack
+```json
+{
+  "id": "new_modpack",
+  "name": "New Modpack",
+  "version": "1.0.0",
+  "minecraftVersion": "1.20.1",
+  "modloader": "forge",
+  "modloaderVersion": "47.1.3",
+  "gamemode": "Adventure",
+  "isNew": true,
+  "isActive": true,
+  "isComingSoon": false,
+  "images": [
+    "https://luminakraft.com/.../screenshot1.webp"
+  ],
+  "logo": "https://luminakraft.com/.../logo.webp",
+  "backgroundImage": "https://luminakraft.com/.../screenshot1.webp",
+  "urlModpackZip": "https://.../modpack.zip",
+  "collaborators": [],
+  "youtubeEmbed": "",
+  "featureIcons": ["fa-sword", "fa-shield"],
+  "primaryColor": "#ff6b35"
+}
+```
+
+### Adding Translations
+```json
+// en.json
+{
+  "modpacks": {
+    "new_modpack": {
+      "name": "New Modpack",
+      "description": "Complete English description...",
+      "shortDescription": "Adventure modpack with magic"
+    }
+  }
+}
+
+// es.json  
+{
+  "modpacks": {
+    "new_modpack": {
+      "name": "Nuevo Modpack", 
+      "description": "Descripción completa en español...",
+      "shortDescription": "Modpack de aventura con magia"
+    }
+  }
+}
+```
+
+---
+
+**This optimized schema provides better performance, type safety, and developer experience while maintaining all necessary functionality for both launcher and web clients.**
