@@ -9,6 +9,9 @@ from typing import Optional
 from app.routers import modpacks, translations, curseforge
 from app.config import settings
 
+# Debug: print ALLOWED_ORIGINS at startup
+print(f"[DEBUG] ALLOWED_ORIGINS from settings: {settings.ALLOWED_ORIGINS}")
+
 # Create FastAPI app
 app = FastAPI(
     title="LuminaKraft Launcher API",
