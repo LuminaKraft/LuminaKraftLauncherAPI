@@ -104,25 +104,21 @@ jobs:
           # Verify files were extracted
           ls -la
           
-          # Stop existing container
-          docker stop luminakraft-api || true
-          docker rm luminakraft-api || true
+          # Stop existing containers
+          docker-compose down || true
           
-          # Build new image
-          docker build -t luminakraft-launcher-api:latest .
-          
-          # Run new container with CurseForge API key
-          # Escape $ characters in the API key for Docker environment variables
+          # Set up environment variable for docker-compose
           API_KEY_ESCAPED=$(echo '${{ secrets.CURSEFORGE_API_KEY }}' | sed 's/\$/\$\$/g')
-          docker run -d \
-            --name luminakraft-api \
-            --restart unless-stopped \
-            -p 9374:9374 \
-            -e CURSEFORGE_API_KEY="$API_KEY_ESCAPED" \
-            luminakraft-launcher-api:latest
+          export CURSEFORGE_API_KEY="$API_KEY_ESCAPED"
           
-          # Show container status
-          docker ps | grep luminakraft-api || echo "Container not running"
+          # Build and start with docker-compose
+          docker-compose build --no-cache
+          docker-compose up -d
+          
+          # Show container status and wait for health check
+          sleep 10
+          docker-compose ps
+          docker logs luminakraft-launcher-api
           
           # Clean up
           rm -f $HOME/luminakraft-api.tar.gz
@@ -130,7 +126,15 @@ jobs:
           
     - name: Verify deployment
       run: |
-        sleep 15
-        # Test the API
-        curl -f https://api.luminakraft.com/health || echo "API not accessible yet, checking..."
-        curl -f https://api.luminakraft.com/v1/info || echo "Info endpoint not accessible yet" 
+        echo "Waiting for deployment to be ready..."
+        sleep 30
+        
+        # Test health endpoint (no auth required)
+        echo "Testing health endpoint..."
+        curl -f https://api.luminakraft.com/health || echo "Health check failed"
+        
+        # Test authenticated endpoints with dummy token
+        echo "Testing authenticated endpoints..."
+        DUMMY_TOKEN=$(echo -n 'deployment_test_12345' | base64)
+        curl -H "x-lk-token: $DUMMY_TOKEN" https://api.luminakraft.com/v1/info || echo "Info endpoint not accessible"
+        curl -H "x-lk-token: $DUMMY_TOKEN" https://api.luminakraft.com/v1/curseforge/test || echo "CurseForge test endpoint not accessible" 
