@@ -32,28 +32,38 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Custom middleware to filter origins like Express
+# Improved CORS middleware: always return 200 for OPTIONS, only block disallowed origins for non-OPTIONS
 @app.middleware("http")
 async def custom_cors_filter(request, call_next):
     origin = request.headers.get("origin")
-    # Allow if no Origin header (non-browser clients), or if origin is in allowed_origins
-    if not origin or origin in allowed_origins:
-        response = await call_next(request)
-        # Set Access-Control-Allow-Origin dynamically
+    # Debug log for CORS
+    print(f"[CORS] Origin: {origin} | Allowed: {allowed_origins} | Method: {request.method}")
+
+    # Always respond to OPTIONS with 200 and CORS headers
+    if request.method == "OPTIONS":
+        from starlette.responses import Response
+        response = Response(status_code=200)
         if origin:
             response.headers["Access-Control-Allow-Origin"] = origin
         else:
             response.headers["Access-Control-Allow-Origin"] = "*"
-        # For preflight OPTIONS requests, set additional headers
-        if request.method == "OPTIONS":
-            response.headers["Access-Control-Allow-Methods"] = "GET,POST,OPTIONS"
-            response.headers["Access-Control-Allow-Headers"] = (
-                "Content-Type,Authorization,x-lk-token,x-luminakraft-client,Cache-Control,Accept,If-None-Match,If-Modified-Since,X-Requested-With"
-            )
-            response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Access-Control-Allow-Methods"] = "GET,POST,OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = (
+            "Content-Type,Authorization,x-lk-token,x-luminakraft-client,Cache-Control,Accept,If-None-Match,If-Modified-Since,X-Requested-With"
+        )
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        return response
+
+    # For non-OPTIONS, allow if no Origin or in allowed_origins
+    if not origin or origin in allowed_origins:
+        response = await call_next(request)
+        if origin:
+            response.headers["Access-Control-Allow-Origin"] = origin
+        else:
+            response.headers["Access-Control-Allow-Origin"] = "*"
         return response
     else:
-        from fastapi.responses import JSONResponse
+        print(f"[CORS] Blocked request from origin: {origin}")
         return JSONResponse({"detail": "CORS origin not allowed"}, status_code=400)
 
 # Include routers
