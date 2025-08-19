@@ -13,8 +13,8 @@ services:
     environment:
       - ENVIRONMENT=development
       - PORT=9374
-      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173,http://127.0.0.1:3000,http://127.0.0.1:5173
-      - CURSEFORGE_API_KEY=${CURSEFORGE_API_KEY:-}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+      - CURSEFORGE_API_KEY=${CURSEFORGE_API_KEY}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9374/health"]
