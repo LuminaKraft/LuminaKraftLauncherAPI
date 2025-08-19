@@ -41,10 +41,12 @@ async function verifyMicrosoftToken(accessToken) {
 
 // Validate launcher-generated client token (offline users)
 function verifyLauncherToken(token) {
-  // Minimal validation: base64url or hex-like token with sensible length
+  // Minimal validation: base64url token with sensible length
   if (typeof token !== 'string') return null;
   const trimmed = token.trim();
-  if (trimmed.length < 24) return null;
+  // Base64url tokens from launcher should be at least 16 chars (after padding removal)
+  if (trimmed.length < 16) return null;
+  // Allow base64url characters: A-Z, a-z, 0-9, -, _
   if (!/^[A-Za-z0-9_\-]+$/.test(trimmed)) return null;
   // Use token itself as stable user identifier for rate limiting
   return { userId: `lk_${trimmed}`, username: 'OfflineUser' };
