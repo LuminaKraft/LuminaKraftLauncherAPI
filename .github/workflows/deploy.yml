@@ -109,16 +109,33 @@ jobs:
           
           # Set up environment variable for docker-compose
           API_KEY_ESCAPED=$(echo '${{ secrets.CURSEFORGE_API_KEY }}' | sed 's/\$/\$\$/g')
-          export CURSEFORGE_API_KEY="$API_KEY_ESCAPED"
+          echo "CURSEFORGE_API_KEY=$API_KEY_ESCAPED" > .env
           
           # Build and start with docker-compose
           docker-compose build --no-cache
           docker-compose up -d
           
-          # Show container status and wait for health check
-          sleep 10
+          # Wait for container to be ready and check health
+          echo "Waiting for container to be ready..."
+          for i in {1..12}; do
+            STATUS=$(docker-compose ps | grep luminakraft-launcher-api | grep -o "healthy\|starting\|unhealthy" || echo "unknown")
+            if [ "$STATUS" = "healthy" ]; then
+              echo "✅ Container is healthy after $((i*5)) seconds"
+              break
+            elif [ "$STATUS" = "starting" ] || [ "$STATUS" = "unknown" ]; then
+              echo "⏳ Container health: $STATUS (attempt $i/12)"
+              sleep 5
+            else
+              echo "❌ Container unhealthy: $STATUS"
+              docker logs luminakraft-launcher-api
+              exit 1
+            fi
+          done
+          
+          # Final status
           docker-compose ps
-          docker logs luminakraft-launcher-api
+          echo "Container logs:"
+          docker logs luminakraft-launcher-api --tail 10
           
           # Clean up
           rm -f $HOME/luminakraft-api.tar.gz
@@ -126,15 +143,34 @@ jobs:
           
     - name: Verify deployment
       run: |
-        echo "Waiting for deployment to be ready..."
-        sleep 30
+        echo "Testing external API endpoints..."
+        sleep 5
         
-        # Test health endpoint (no auth required)
-        echo "Testing health endpoint..."
-        curl -f https://api.luminakraft.com/health || echo "Health check failed"
+        # Test health endpoint (may be blocked by Cloudflare externally, but that's OK)
+        echo "Testing health endpoint (may be blocked by Cloudflare)..."
+        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://api.luminakraft.com/health || echo "000")
+        if [ "$HTTP_CODE" = "200" ]; then
+          echo "✅ Health check passed"
+        elif [ "$HTTP_CODE" = "403" ]; then
+          echo "⚠️  Health endpoint blocked by Cloudflare (expected behavior)"
+        else
+          echo "❌ Health check failed with code: $HTTP_CODE"
+        fi
         
         # Test authenticated endpoints with dummy token
         echo "Testing authenticated endpoints..."
         DUMMY_TOKEN=$(echo -n 'deployment_test_12345' | base64)
-        curl -H "x-lk-token: $DUMMY_TOKEN" https://api.luminakraft.com/v1/info || echo "Info endpoint not accessible"
-        curl -H "x-lk-token: $DUMMY_TOKEN" https://api.luminakraft.com/v1/curseforge/test || echo "CurseForge test endpoint not accessible" 
+        
+        INFO_CODE=$(curl -s -o /dev/null -w "%{http_code}" -H "x-lk-token: $DUMMY_TOKEN" https://api.luminakraft.com/v1/info)
+        if [ "$INFO_CODE" = "200" ] || [ "$INFO_CODE" = "403" ]; then
+          echo "✅ Info endpoint responding (code: $INFO_CODE)"
+        else
+          echo "❌ Info endpoint failed with code: $INFO_CODE"
+        fi
+        
+        CF_CODE=$(curl -s -o /dev/null -w "%{http_code}" -H "x-lk-token: $DUMMY_TOKEN" https://api.luminakraft.com/v1/curseforge/test)
+        if [ "$CF_CODE" = "200" ] || [ "$CF_CODE" = "403" ]; then
+          echo "✅ CurseForge endpoint responding (code: $CF_CODE)"
+        else
+          echo "❌ CurseForge endpoint failed with code: $CF_CODE"
+        fi 
