@@ -128,7 +128,9 @@ jobs:
           
           # Set up environment variable for docker-compose
           API_KEY_ESCAPED=$(echo '${{ secrets.CURSEFORGE_API_KEY }}' | sed 's/\$/\$\$/g')
+          ALLOWED_ORIGINS_ESCAPED=$(echo '${{ secrets.ALLOWED_ORIGINS }}' | sed 's/\$/\$\$/g')
           echo "CURSEFORGE_API_KEY=$API_KEY_ESCAPED" > .env
+          echo "ALLOWED_ORIGINS=$ALLOWED_ORIGINS_ESCAPED" >> .env
           
           # Show Docker system information for debugging
           echo "💾 Docker system info:"
