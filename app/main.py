@@ -21,38 +21,40 @@ app = FastAPI(
 # Add middleware
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-# Configure CORS
-allowed_origins = []
-if settings.ALLOWED_ORIGINS:
-    allowed_origins = [origin.strip() for origin in settings.ALLOWED_ORIGINS.split(",") if origin.strip()]
 
-if allowed_origins:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=allowed_origins,
-        allow_credentials=True,
-        allow_methods=["GET", "POST", "OPTIONS"],
-        allow_headers=[
-            "Content-Type",
-            "Authorization", 
-            "x-lk-token",
-            "x-luminakraft-client",
-            "Cache-Control",
-            "Accept",
-            "If-None-Match",
-            "If-Modified-Since",
-            "X-Requested-With"
-        ],
-    )
-else:
-    # Permissive CORS for development
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["GET", "POST", "OPTIONS"],
-        allow_headers=["*"],
-    )
+# --- Custom CORS logic to match old Express.js behavior ---
+allowed_origins = [o.strip() for o in (settings.ALLOWED_ORIGINS or "").split(",") if o.strip()]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=".*",  # Allow all, but filter in custom middleware
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Custom middleware to filter origins like Express
+@app.middleware("http")
+async def custom_cors_filter(request, call_next):
+    origin = request.headers.get("origin")
+    # Allow if no Origin header (non-browser clients), or if origin is in allowed_origins
+    if not origin or origin in allowed_origins:
+        response = await call_next(request)
+        # Set Access-Control-Allow-Origin dynamically
+        if origin:
+            response.headers["Access-Control-Allow-Origin"] = origin
+        else:
+            response.headers["Access-Control-Allow-Origin"] = "*"
+        # For preflight OPTIONS requests, set additional headers
+        if request.method == "OPTIONS":
+            response.headers["Access-Control-Allow-Methods"] = "GET,POST,OPTIONS"
+            response.headers["Access-Control-Allow-Headers"] = (
+                "Content-Type,Authorization,x-lk-token,x-luminakraft-client,Cache-Control,Accept,If-None-Match,If-Modified-Since,X-Requested-With"
+            )
+            response.headers["Access-Control-Allow-Credentials"] = "true"
+        return response
+    else:
+        from fastapi.responses import JSONResponse
+        return JSONResponse({"detail": "CORS origin not allowed"}, status_code=400)
 
 # Include routers
 app.include_router(modpacks.router, prefix="/v1")
