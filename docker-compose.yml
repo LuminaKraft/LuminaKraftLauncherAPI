@@ -16,9 +16,9 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9374/health"]
       interval: 30s
-      timeout: 10s
+      timeout: 3s
       retries: 3
-      start_period: 10s
+      start_period: 5s
 
   # Optional: nginx reverse proxy for production-like setup
   nginx:
