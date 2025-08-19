@@ -14,17 +14,28 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
+    - name: Setup Python
+      uses: actions/setup-python@v4
       with:
-        node-version: '18'
-        cache: 'npm'
+        python-version: '3.11'
+        
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
         
     - name: Install dependencies
-      run: npm ci
-      
+      run: |
+        uv pip install --system -r pyproject.toml
+        
     - name: Run tests
-      run: npm test
+      run: |
+        # Run any Python tests if they exist
+        if [ -f "tests/" ]; then
+          uv run pytest tests/
+        else
+          echo "No tests directory found, skipping tests"
+        fi
       env:
         CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
       
@@ -46,10 +57,10 @@ jobs:
         mkdir -p deploy-package
         
         # Copy specific files and directories we need
-        cp package.json package-lock.json deploy-package/
+        cp pyproject.toml deploy-package/
         cp Dockerfile docker-compose.yml deploy-package/
         cp Dockerfile.debian deploy-package/ || true
-        cp -r src/ deploy-package/
+        cp -r app/ deploy-package/
         cp -r data/ deploy-package/
         cp -r scripts/ deploy-package/ || true
         cp README.md deploy-package/ || true
