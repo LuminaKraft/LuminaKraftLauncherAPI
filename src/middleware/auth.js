@@ -58,12 +58,6 @@ async function authenticateUser(req, res, next) {
     const authHeader = req.headers['authorization'] || req.headers['Authorization'];
     const launcherTokenHeader = req.headers['x-lk-token'] || req.headers['x-luminakraft-token'];
 
-    console.log('[DEBUG] Auth middleware - Headers:', {
-      authHeader: authHeader ? `Bearer ${authHeader.slice(7, 15)}...` : null,
-      launcherTokenHeader: launcherTokenHeader ? `${launcherTokenHeader.slice(0, 8)}...` : null,
-      userAgent: req.headers['user-agent'],
-      clientHeader: req.headers['x-luminakraft-client']
-    });
 
     let userId = null;
     let username = null;
@@ -85,14 +79,7 @@ async function authenticateUser(req, res, next) {
     // 2) Fallback to launcher token for offline users
     if (!userId && launcherTokenHeader) {
       const tokenString = launcherTokenHeader.toString();
-      console.log('[DEBUG] Verifying launcher token:', {
-        length: tokenString.length,
-        token: `${tokenString.slice(0, 8)}...${tokenString.slice(-4)}`,
-        regex: /^[A-Za-z0-9_\-]+$/.test(tokenString)
-      });
-      
       const verified = verifyLauncherToken(tokenString);
-      console.log('[DEBUG] Token verification result:', !!verified);
       
       if (verified) {
         userId = verified.userId;
