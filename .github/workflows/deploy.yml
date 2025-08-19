@@ -48,6 +48,7 @@ jobs:
         # Copy specific files and directories we need
         cp package.json package-lock.json deploy-package/
         cp Dockerfile docker-compose.yml deploy-package/
+        cp Dockerfile.debian deploy-package/ || true
         cp -r src/ deploy-package/
         cp -r data/ deploy-package/
         cp -r scripts/ deploy-package/ || true
@@ -92,6 +93,8 @@ jobs:
         port: ${{ secrets.DEPLOY_PORT }}
         username: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.DEPLOY_SSH_KEY }}
+        timeout: 30m
+        command_timeout: 20m
         script: |
           # Navigate to app directory
           APP_DIR="$HOME/luminakraft-launcher-api"
@@ -104,15 +107,50 @@ jobs:
           # Verify files were extracted
           ls -la
           
-          # Stop existing containers
+          # Stop existing containers and clean up
+          echo "🛑 Stopping existing containers..."
           docker-compose down || true
+          
+          # Clean up old images to free space
+          echo "🧹 Cleaning up old Docker images..."
+          docker image prune -f || true
           
           # Set up environment variable for docker-compose
           API_KEY_ESCAPED=$(echo '${{ secrets.CURSEFORGE_API_KEY }}' | sed 's/\$/\$\$/g')
           echo "CURSEFORGE_API_KEY=$API_KEY_ESCAPED" > .env
           
+          # Show Docker system information for debugging
+          echo "💾 Docker system info:"
+          docker system df || true
+          
           # Build and start with docker-compose
-          docker-compose build --no-cache
+          # Add error handling and timeout for build process
+          echo "🔨 Building Docker image..."
+          timeout 15m docker-compose build --no-cache || {
+            echo "❌ Docker build failed or timed out with Alpine"
+            echo "🔄 Retrying with Debian-based image..."
+            
+            # Try with Debian-based Dockerfile as fallback
+            if [ -f Dockerfile.debian ]; then
+              mv Dockerfile Dockerfile.alpine.backup
+              mv Dockerfile.debian Dockerfile
+              timeout 15m docker-compose build --no-cache || {
+                echo "❌ Debian build also failed"
+                mv Dockerfile.alpine.backup Dockerfile
+                docker system df
+                docker system prune -f
+                exit 1
+              }
+              echo "✅ Debian-based build successful"
+            else
+              echo "❌ No fallback Dockerfile available"
+              docker system df
+              docker system prune -f
+              exit 1
+            fi
+          }
+          
+          echo "🚀 Starting containers..."
           docker-compose up -d
           
           # Wait for container to be ready and check health
