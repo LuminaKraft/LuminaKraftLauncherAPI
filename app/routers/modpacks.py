@@ -111,8 +111,13 @@ async def get_modpack(
         modpack_translations = translations.get("modpacks", {}).get(modpack_id, {})
         modpack_data['description'] = modpack_translations.get('description', "")
         modpack_data['shortDescription'] = modpack_translations.get('shortDescription', "")
+        # Add features from translations if available
+        features = translations.get("features", {}).get(modpack_id, [])
+        modpack_data['features'] = features
         return Modpack(**modpack_data)
     except HTTPException:
         raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to load modpack data")
     except Exception as e:
         raise HTTPException(status_code=500, detail="Failed to load modpack data")
