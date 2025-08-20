@@ -1,6 +1,7 @@
 from pydantic import BaseModel, HttpUrl
 from typing import List, Optional, Dict, Any
 
+
 class Collaborator(BaseModel):
     name: str
     logo: Optional[HttpUrl] = None
@@ -29,6 +30,7 @@ class Modpack(BaseModel):
     primaryColor: str
     leaderboardPath: Optional[str] = None
     ip: Optional[str] = None
+    features: List['Feature'] = []
 
 class ModpackLightweight(BaseModel):
     """Lightweight modpack model for list endpoints"""
@@ -79,7 +81,7 @@ class Feature(BaseModel):
 class ModpackFeatures(BaseModel):
     modpackId: str
     language: str
-    features: List[Feature]
+    features: List['Feature']
 
 class ModpackTranslations(BaseModel):
     name: str
@@ -88,7 +90,7 @@ class ModpackTranslations(BaseModel):
 
 class Translations(BaseModel):
     modpacks: Dict[str, ModpackTranslations]
-    features: Dict[str, List[Feature]]
+    features: Dict[str, List['Feature']]
     ui: UITranslations
 
 class AvailableLanguages(BaseModel):
