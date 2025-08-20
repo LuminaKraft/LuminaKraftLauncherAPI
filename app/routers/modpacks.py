@@ -95,6 +95,7 @@ async def get_modpacks_list(
 @router.get("/modpacks/{modpack_id}", response_model=Modpack)
 async def get_modpack(
     modpack_id: str,
+    lang: str = Query("en", description="Language code (es, en)"),
     user: UserInfo = Depends(rate_limited_user)
 ):
     """Get specific modpack with full details"""
@@ -106,7 +107,6 @@ async def get_modpack(
                 detail=f"Modpack with ID '{modpack_id}' does not exist"
             )
         # Get translations for this modpack
-        lang = "en"  # Default, or get from query/user if needed
         translations = data_loader.get_translations(lang)
         modpack_translations = translations.get("modpacks", {}).get(modpack_id, {})
         modpack_data['description'] = modpack_translations.get('description', "")
