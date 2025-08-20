@@ -119,5 +119,3 @@ async def get_modpack(
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail="Failed to load modpack data")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Failed to load modpack data")
