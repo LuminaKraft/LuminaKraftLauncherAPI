@@ -1,3 +1,5 @@
+
+# Ensure forward references are resolved after all classes are defined
 from pydantic import BaseModel, HttpUrl
 from typing import List, Optional, Dict, Any
 
@@ -93,6 +95,12 @@ class Translations(BaseModel):
     features: Dict[str, List['Feature']]
     ui: UITranslations
 
+
 class AvailableLanguages(BaseModel):
     availableLanguages: List[str]
     defaultLanguage: str
+
+# Ensure forward references are resolved after all classes are defined
+Modpack.update_forward_refs()
+ModpackFeatures.update_forward_refs()
+Translations.update_forward_refs()
