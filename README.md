@@ -7,7 +7,7 @@ High-performance REST server providing modpack data, translations, and launcher 
 🌐 **API Base URL**: `https://api.luminakraft.com`  
 📡 **Status**: ✅ Operational  
 📋 **Version**: 1.0.0  
-🌍 **Languages**: Spanish, English  
+🌍 **Languages**: English (default), Spanish  
 ⚡ **Framework**: FastAPI (Python)  
 📦 **Package Manager**: uv
 
@@ -60,25 +60,22 @@ docker-compose up
 |--------|----------|-------------|
 | `GET` | `/health` | Health check |
 | `GET` | `/v1/info` | API information |
-| `GET` | `/v1/modpacks?lang=en` | **[MAIN]** Lightweight modpacks with translations |
-| `GET` | `/v1/modpacks/list?lang=en` | Basic modpack info for dropdowns |
-| `GET` | `/v1/modpacks/{id}` | Full modpack details |
-| `GET` | `/v1/modpacks/{id}/features/{lang}` | Modpack features |
-| `GET` | `/v1/translations` | Available languages |
-| `GET` | `/v1/translations/{lang}` | Full translations |
+| `GET` | `/v1/modpacks?lang=en` | **[MAIN]** Lightweight modpacks (default: English) |
+| `GET` | `/v1/modpacks/list?lang=en` | Basic modpack info for dropdowns (default: English) |
+| `GET` | `/v1/modpacks/{id}` | Full modpack details (default: English) |
 
 ### 🎯 Optimized Data Flow
 
 **For browsing (client initial load):**
 ```bash
 GET /v1/modpacks?lang=en
-# Returns: Lightweight data + UI translations in single call
+# Returns: Lightweight data (default: English)
 ```
 
 **For details (when user clicks modpack):**
 ```bash
 GET /v1/modpacks/ancientkraft
-# Returns: Full data with all images, collaborators, etc.
+# Returns: Full data with all images, collaborators, etc. (default: English)
 ```
 
 ## 🔐 Authentication
@@ -158,17 +155,8 @@ Rate limiting: 180 requests/minute per user.
 
 ## 🌍 Multi-language Support
 
-The API automatically includes UI translations in modpack responses:
-
-```bash
-# Spanish (default)
-GET /v1/modpacks?lang=es
-# Returns: Spanish translations embedded
-
-# English  
-GET /v1/modpacks?lang=en
-# Returns: English translations embedded
-```
+All endpoints default to English (`lang=en`) unless another language is specified (e.g., `lang=es`).
+Translations are embedded in modpack responses. No separate translations endpoints exist.
 
 ## 🎮 Available Modpacks
 
@@ -217,7 +205,7 @@ LuminaKraftLauncherAPI/
 │   │   └── response.py      # Response models
 │   ├── routers/             # API endpoints
 │   │   ├── modpacks.py      # Modpack endpoints
-│   │   ├── translations.py  # Translation endpoints
+│   │   ├── translations.py  # (removed)
 │   │   └── curseforge.py    # CurseForge proxy
 │   └── services/            # Business logic
 │       ├── data_loader.py   # JSON data loading
@@ -292,8 +280,6 @@ curl -H "x-lk-token: test-token-long-enough" \
 curl -H "x-lk-token: test-token-long-enough" \
   "https://api.luminakraft.com/v1/modpacks/ancientkraft"
 
-# Test translations
-curl "https://api.luminakraft.com/v1/translations"
 ```
 
 ## 🚀 Deployment

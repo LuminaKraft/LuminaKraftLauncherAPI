@@ -12,7 +12,7 @@ router = APIRouter()
 
 @router.get("/modpacks", response_model=ModpacksResponse)
 async def get_modpacks(
-    lang: str = Query("es", description="Language code (es, en)"),
+    lang: str = Query("en", description="Language code (es, en)"),
     user: UserInfo = Depends(rate_limited_user)
 ):
     """Get all modpacks with lightweight data and translations"""
@@ -100,52 +100,19 @@ async def get_modpack(
     """Get specific modpack with full details"""
     try:
         modpack_data = data_loader.get_modpack_by_id(modpack_id)
-        
         if not modpack_data:
             raise HTTPException(
                 status_code=404, 
                 detail=f"Modpack with ID '{modpack_id}' does not exist"
             )
-        
+        # Get translations for this modpack
+        lang = "en"  # Default, or get from query/user if needed
+        translations = data_loader.get_translations(lang)
+        modpack_translations = translations.get("modpacks", {}).get(modpack_id, {})
+        modpack_data['description'] = modpack_translations.get('description', "")
+        modpack_data['shortDescription'] = modpack_translations.get('shortDescription', "")
         return Modpack(**modpack_data)
-        
     except HTTPException:
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail="Failed to load modpack data")
-
-@router.get("/modpacks/{modpack_id}/features/{lang}", response_model=ModpackFeatures)
-async def get_modpack_features(
-    modpack_id: str,
-    lang: str,
-    user: UserInfo = Depends(rate_limited_user)
-):
-    """Get modpack features in specific language"""
-    try:
-        # Check if modpack exists
-        modpack_data = data_loader.get_modpack_by_id(modpack_id)
-        if not modpack_data:
-            raise HTTPException(
-                status_code=404,
-                detail=f"Modpack with ID '{modpack_id}' does not exist"
-            )
-        
-        # Get features for the modpack in specified language
-        features = data_loader.get_modpack_features(modpack_id, lang)
-        
-        if features is None:
-            raise HTTPException(
-                status_code=404,
-                detail=f"Features for modpack '{modpack_id}' in language '{lang}' do not exist"
-            )
-        
-        return ModpackFeatures(
-            modpackId=modpack_id,
-            language=lang,
-            features=features
-        )
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Failed to load features data")

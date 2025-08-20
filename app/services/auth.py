@@ -99,7 +99,7 @@ async def get_current_user(
         detail="Missing or invalid authentication token"
     )
 
-def create_rate_limiter(window_ms: int = None, max_requests: int = None):
+def create_rate_limiter(window_ms: Optional[int] = None, max_requests: Optional[int] = None):
     """Create a rate limiting dependency"""
     window_ms = window_ms or settings.RATE_LIMIT_WINDOW_MS
     max_requests = max_requests or settings.RATE_LIMIT_MAX

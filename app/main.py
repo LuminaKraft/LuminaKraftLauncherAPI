@@ -6,7 +6,7 @@ import uvicorn
 import os
 from typing import Optional
 
-from app.routers import modpacks, translations, curseforge
+from app.routers import modpacks, curseforge
 
 from app.config import settings
 
@@ -65,7 +65,6 @@ async def custom_cors_filter(request, call_next):
 
 # Include routers
 app.include_router(modpacks.router, prefix="/v1")
-app.include_router(translations.router, prefix="/v1") 
 app.include_router(curseforge.router, prefix="/v1/curseforge")
 
 @app.get("/health")

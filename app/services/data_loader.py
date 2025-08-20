@@ -25,6 +25,9 @@ class DataLoader:
             except json.JSONDecodeError as e:
                 raise ValueError(f"Invalid JSON in modpacks file: {e}")
         
+        if self._modpacks_cache is None:
+            # This should not happen, but just in case, return an empty list or raise an error
+            return []
         return self._modpacks_cache
     
     def get_modpack_by_id(self, modpack_id: str) -> Optional[Dict]:

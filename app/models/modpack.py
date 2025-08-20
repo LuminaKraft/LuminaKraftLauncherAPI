@@ -8,6 +8,8 @@ class Collaborator(BaseModel):
 class Modpack(BaseModel):
     id: str
     name: str
+    shortDescription: str
+    description: str
     version: str
     minecraftVersion: str
     modloader: str
