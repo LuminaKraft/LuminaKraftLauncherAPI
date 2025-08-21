@@ -1,9 +1,13 @@
 from fastapi import APIRouter, HTTPException, Depends, Query
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
+from pydantic import BaseModel
 import httpx
 
 from app.services.auth import rate_limited_user, UserInfo
 from app.config import settings
+
+class GetModFilesRequest(BaseModel):
+    fileIds: List[int]
 
 router = APIRouter()
 
@@ -79,20 +83,18 @@ async def get_mod(
     except httpx.RequestError:
         raise HTTPException(status_code=503, detail="Failed to connect to CurseForge API")
 
-@router.get("/mods/files")
+@router.post("/mods/files")
 async def get_mod_files(
-    modIds: str = Query(..., description="Comma-separated list of mod IDs"),
+    request: GetModFilesRequest,
     user: UserInfo = Depends(rate_limited_user)
 ):
-    """Get mod files from CurseForge for multiple mods"""
+    """Get mod files from CurseForge for multiple file IDs"""
     if not settings.CURSEFORGE_API_KEY:
         raise HTTPException(status_code=503, detail="CurseForge API not configured")
     
     try:
-        # Parse mod IDs
-        mod_ids = [int(id.strip()) for id in modIds.split(",") if id.strip()]
-        if not mod_ids:
-            raise HTTPException(status_code=400, detail="No valid mod IDs provided")
+        if not request.fileIds:
+            raise HTTPException(status_code=400, detail="No file IDs provided")
         
         async with httpx.AsyncClient() as client:
             response = await client.post(
@@ -102,7 +104,7 @@ async def get_mod_files(
                     "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
-                json={"modIds": mod_ids},
+                json={"fileIds": request.fileIds},
                 timeout=10.0
             )
             
@@ -111,7 +113,5 @@ async def get_mod_files(
             
             return response.json()
             
-    except ValueError:
-        raise HTTPException(status_code=400, detail="Invalid mod IDs format")
     except httpx.RequestError:
         raise HTTPException(status_code=503, detail="Failed to connect to CurseForge API")
