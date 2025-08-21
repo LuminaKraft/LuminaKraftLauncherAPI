@@ -34,6 +34,7 @@ async def get_modpacks(
                 version=modpack_data["version"],
                 minecraftVersion=modpack_data["minecraftVersion"],
                 modloader=modpack_data["modloader"],
+                modloaderVersion=modpack_data["modloaderVersion"],
                 gamemode=modpack_data["gamemode"],
                 logo=modpack_data["logo"],
                 backgroundImage=modpack_data["backgroundImage"],
@@ -79,7 +80,8 @@ async def get_modpacks_list(
                 name=mp["name"],
                 version=mp["version"],
                 minecraftVersion=mp["minecraftVersion"],
-                modloader=mp["modloader"]
+                modloader=mp["modloader"],
+                modloaderVersion=mp["modloaderVersion"]
             )
             for mp in modpacks_data
         ]

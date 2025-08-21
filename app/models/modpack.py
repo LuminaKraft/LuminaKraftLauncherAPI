@@ -42,6 +42,7 @@ class ModpackLightweight(BaseModel):
     version: str
     minecraftVersion: str
     modloader: str
+    modloaderVersion: str
     gamemode: str
     logo: HttpUrl
     backgroundImage: HttpUrl
@@ -58,6 +59,7 @@ class ModpackList(BaseModel):
     version: str
     minecraftVersion: str
     modloader: str
+    modloaderVersion: str
 
 class UITranslations(BaseModel):
     """UI translations needed for modpack display"""
