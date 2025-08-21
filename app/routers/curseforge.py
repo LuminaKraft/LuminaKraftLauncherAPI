@@ -9,6 +9,10 @@ from app.config import settings
 class GetModFilesRequest(BaseModel):
     fileIds: List[int]
 
+class GetModsRequest(BaseModel):
+    modIds: List[int]
+    filterPcOnly: Optional[bool] = True
+
 router = APIRouter()
 
 @router.get("/test")
@@ -76,6 +80,43 @@ async def get_mod(
             if response.status_code == 404:
                 raise HTTPException(status_code=404, detail="Mod not found")
             elif response.status_code != 200:
+                raise HTTPException(status_code=response.status_code, detail="CurseForge API error")
+            
+            return response.json()
+            
+    except httpx.RequestError:
+        raise HTTPException(status_code=503, detail="Failed to connect to CurseForge API")
+
+
+@router.post("/mods")
+async def get_mods(
+    request: GetModsRequest,
+    user: UserInfo = Depends(rate_limited_user)
+):
+    """Get multiple mods from CurseForge"""
+    if not settings.CURSEFORGE_API_KEY:
+        raise HTTPException(status_code=503, detail="CurseForge API not configured")
+    
+    try:
+        if not request.modIds:
+            raise HTTPException(status_code=400, detail="No mod IDs provided")
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"{settings.CURSEFORGE_API_URL}/mods",
+                headers={
+                    "x-api-key": settings.CURSEFORGE_API_KEY,
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                json={
+                    "modIds": request.modIds,
+                    "filterPcOnly": request.filterPcOnly
+                },
+                timeout=10.0
+            )
+            
+            if response.status_code != 200:
                 raise HTTPException(status_code=response.status_code, detail="CurseForge API error")
             
             return response.json()
