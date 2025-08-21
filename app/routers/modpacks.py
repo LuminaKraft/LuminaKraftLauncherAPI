@@ -42,7 +42,8 @@ async def get_modpacks(
                 isNew=modpack_data.get("isNew", False),
                 isActive=modpack_data.get("isActive", False),
                 isComingSoon=modpack_data.get("isComingSoon", False),
-                urlModpackZip=modpack_data.get("urlModpackZip")
+                urlModpackZip=modpack_data.get("urlModpackZip"),
+                ip=modpack_data.get("ip")
             )
             lightweight_modpacks.append(lightweight_modpack)
         

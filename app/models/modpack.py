@@ -51,6 +51,7 @@ class ModpackLightweight(BaseModel):
     isActive: bool = False
     isComingSoon: bool = False
     urlModpackZip: Optional[HttpUrl] = None
+    ip: Optional[str] = None
 
 class ModpackList(BaseModel):
     """Very basic modpack info for dropdowns"""
