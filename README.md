@@ -224,11 +224,13 @@ LuminaKraftLauncherAPI/
 PORT=9374
 ENVIRONMENT=development
 
-# API Keys  
+# API Keys
 CURSEFORGE_API_KEY=your_key_here
 
-# CORS (production)
-ALLOWED_ORIGINS=app://-,tauri://localhost
+# CORS
+# For Tauri V2: Use tauri://localhost and http://tauri.localhost
+# Note: app://- was removed in Tauri V2
+ALLOWED_ORIGINS=tauri://localhost,http://tauri.localhost
 
 # Rate Limiting
 RATE_LIMIT_WINDOW_MS=60000
